@@ -4,7 +4,7 @@ import { Link } from "react-router";
 import { userContext } from "../../context/userContext";
 
 export default function Nav() {
-    const { userData, setUserData, getUserData, signOut } = useContext(userContext)
+    const { userData, getUserData, signOut } = useContext(userContext)
 
     useEffect(() =>{
         if (localStorage.getItem('token')) {
