@@ -12,7 +12,7 @@ export default function PostCard({ postData }) {
     const postCreateTime = moment(postData.createdAt);
     const postTime = (() => {
         if (moment().diff(postCreateTime, 'hours') < 24) {
-            return postCreateTime.startOf('hour').fromNow()
+            return postCreateTime.fromNow()
         } else {
             return postCreateTime.format('MMM-DD-YYYY, hh:mm A')
         }
@@ -21,7 +21,7 @@ export default function PostCard({ postData }) {
     const commentCreateTime = moment(postData?.comments[0]?.createdAt);
     const commentTime = (() => {
         if (moment().diff(commentCreateTime, 'hours') < 24) {
-            return commentCreateTime.startOf('hour').fromNow()
+            return commentCreateTime.fromNow()
         } else {
             return commentCreateTime.format('MMM-DD-YYYY, hh:mm A')
         }

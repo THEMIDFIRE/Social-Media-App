@@ -12,7 +12,7 @@ export default function AllPosts() {
 
     async function getAllPosts() {
         try {
-            const { data } = await axios(`${import.meta.env.VITE_BASE_URL}/posts?sort=createdAt`, {
+            const { data } = await axios(`${import.meta.env.VITE_BASE_URL}/posts?sort=-createdAt`, {
                 headers: { token: localStorage.getItem('token') }
             })
 
