@@ -10,7 +10,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 
 const schema = z.object({
     body: z.string().optional(),
-    image: z.any().optional() // Fixed: changed from 'Image' to 'image'
+    image: z.any().optional()
 })
 
 export default function CreatePost() {
@@ -30,11 +30,10 @@ export default function CreatePost() {
         const hasImg = selectedImg;
 
         if (!hasTxt && !hasImg) {
-            setIsValidErrMsg('Please add some content or image to your post') // Fixed typo
+            setIsValidErrMsg('Please add some content or image to your post')
             return;
         }
 
-        // Clear validation error if we have content
         setIsValidErrMsg('');
 
         const formData = new FormData();
@@ -51,7 +50,7 @@ export default function CreatePost() {
             const { data } = await axios.post(`${import.meta.env.VITE_BASE_URL}/posts`, formData, {
                 headers: { 
                     token: localStorage.getItem('token'),
-                    'Content-Type': 'multipart/form-data' // Added Content-Type header
+                    'Content-Type': 'multipart/form-data'
                 },
             })
             console.log('success', data);
@@ -83,7 +82,7 @@ export default function CreatePost() {
             uploadImg.current.value = ''
         }
         if (!bodyValue?.trim()) {
-            setIsValidErrMsg('Please add some content or image to your post') // Fixed typo
+            setIsValidErrMsg('Please add some content or image to your post')
         }
     }
 
