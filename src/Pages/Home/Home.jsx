@@ -1,5 +1,5 @@
-import AllPosts from "../Posts/AllPosts";
-import CreatePost from "../Posts/CreatePost";
+import CreatePost from "../../components/Post/CreatePost";
+import AllPosts from "../allPosts/AllPosts";
 
 export default function Home() {
 

@@ -1,8 +1,8 @@
 import axios from 'axios'
 import { useEffect, useState } from 'react'
-import PostCard from '../../components/PostCard/PostCard'
 import Skeleton from 'react-loading-skeleton'
 import 'react-loading-skeleton/dist/skeleton.css'
+import PostCard from '../../components/Post/PostCard'
 
 
 export default function AllPosts() {
