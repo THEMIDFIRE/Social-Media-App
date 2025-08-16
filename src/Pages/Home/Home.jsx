@@ -1,5 +1,5 @@
 import CreatePost from "../../components/Post/CreatePost";
-import AllPosts from "../allPosts/AllPosts";
+import AllPosts from "../Posts/AllPosts";
 
 export default function Home() {
 

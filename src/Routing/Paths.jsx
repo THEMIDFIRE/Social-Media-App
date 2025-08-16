@@ -8,7 +8,7 @@ import NotFound from '../Pages/NotFound/NotFound.jsx'
 import Register from '../Pages/Register/Register.jsx'
 import Auth from './Auth.jsx'
 import Protected from './Protected.jsx'
-import PostDetails from '../components/Post/PostDetails.jsx'
+import SinglePost from '../Pages/Posts/SinglePost.jsx'
 
 
 export const layout = createBrowserRouter([
@@ -20,7 +20,7 @@ export const layout = createBrowserRouter([
         , children: [
             { index: true, element: <Protected> <Home /> </Protected> },
             { path: '/profile/:name', element: <Protected> <MyProfile /> </Protected> },
-            { path: '/posts/:id', element: <Protected> <PostDetails /> </Protected> },
+            { path: '/posts/:id', element: <Protected> <SinglePost /> </Protected> },
             { path: '/login', element: <Auth><LogIn /></Auth> },
             { path: '/register', element: <Auth><Register /></Auth> },
             { path: '*', element: <NotFound /> }

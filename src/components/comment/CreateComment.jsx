@@ -5,8 +5,9 @@ import { useContext } from 'react'
 import { useForm } from 'react-hook-form'
 import { userContext } from '../../context/userContext'
 
-import * as z from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { toast } from 'react-toastify'
+import * as z from 'zod'
 
 const schema = z.object({
     content: z.string().min(1)
@@ -19,16 +20,21 @@ export default function CreateComment({ postId }) {
     async function createComment({ content }) {
         const commentData = { content, post: postId }
         try {
-            const { data } = await axios(`${import.meta.env.VITE_BASE_URL}/comments`, {
-                method: 'POST',
+            const { data } = await axios.post(`${import.meta.env.VITE_BASE_URL}/comments`, commentData, {
                 headers: { token: localStorage.getItem('token') },
-                data: commentData
             });
             reset()
-            console.log('success');
-
+            toast.success(data.message)
         } catch (error) {
-            console.log('error', error)
+            if (error.response) {
+                toast.error(error.response.data);
+                toast.error(error.response.status);
+                toast.error(error.response.headers);
+            } else if (error.request) {
+                toast.error(error.request);
+            } else {
+                toast.error('Error', error.message);
+            }
         }
     }
 

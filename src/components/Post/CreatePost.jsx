@@ -7,6 +7,7 @@ import { userContext } from "../../context/userContext";
 
 import * as z from 'zod';
 import { zodResolver } from "@hookform/resolvers/zod";
+import { toast } from "react-toastify";
 
 const schema = z.object({
     body: z.string().optional(),
@@ -15,19 +16,19 @@ const schema = z.object({
 
 export default function CreatePost() {
     const [previewImg, setPreviewImg] = useState(null)
-    const [selectedImg, setSelectedImg] = useState(null)
     const [isValidErrMsg, setIsValidErrMsg] = useState('')
     const { userData } = useContext(userContext)
-    const { register, handleSubmit, reset, formState: { errors }, watch } = useForm({ 
-        resolver: zodResolver(schema) 
+    const { register, handleSubmit, reset, formState: { errors }, watch, setValue } = useForm({
+        resolver: zodResolver(schema)
     })
     const uploadImg = useRef()
 
     const bodyValue = watch('body')
+    const imageFiles = watch('image')
 
     async function createPost(values) {
         const hasTxt = values.body?.trim();
-        const hasImg = selectedImg;
+        const hasImg = values.image && values.image.length > 0;
 
         if (!hasTxt && !hasImg) {
             setIsValidErrMsg('Please add some content or image to your post')
@@ -41,46 +42,60 @@ export default function CreatePost() {
             formData.append('body', values.body.trim())
         }
         if (hasImg) {
-            formData.append('image', selectedImg)
+            formData.append('image', values.image[0])
         }
-        console.log('values', values)
-        console.log('selectedImg', selectedImg)
 
         try {
             const { data } = await axios.post(`${import.meta.env.VITE_BASE_URL}/posts`, formData, {
-                headers: { 
+                headers: {
                     token: localStorage.getItem('token'),
                     'Content-Type': 'multipart/form-data'
                 },
             })
-            console.log('success', data);
             reset()
             setPreviewImg(null)
-            setSelectedImg(null)
             setIsValidErrMsg('')
+            toast.success(data.message || 'Post created successfully!')
             if (uploadImg.current) {
                 uploadImg.current.value = ''
             }
         } catch (error) {
-            console.log('error', error)
+            console.error('Error creating post:', error);
+
+            if (error.response) {
+                const errorMessage = error.response.data?.message ||
+                    error.response.data?.error ||
+                    `Server error: ${error.response.status}`;
+                toast.error(errorMessage);
+            } else if (error.request) {
+                toast.error('Network error. Please check your connection.');
+            } else {
+                toast.error(error.message || 'Something went wrong');
+            }
         }
     }
 
-    function handleImg(e) {
-        const img = e.target.files[0];
-        if (img) {
-            setPreviewImg(URL.createObjectURL(img));
-            setSelectedImg(img)
-            setIsValidErrMsg('')
+    function handleImageChange(e) {
+        const files = e.target.files;
+        if (files && files.length > 0) {
+            const file = files[0];
+            setValue('image', files);
+            setPreviewImg(URL.createObjectURL(file));
+            setIsValidErrMsg('');
         }
     }
 
     function rmvImg() {
+        if (previewImg) {
+            URL.revokeObjectURL(previewImg);
+        }
+
         setPreviewImg(null)
-        setSelectedImg(null)
+        setValue('image', null)
         if (uploadImg.current) {
             uploadImg.current.value = ''
         }
+
         if (!bodyValue?.trim()) {
             setIsValidErrMsg('Please add some content or image to your post')
         }
@@ -97,27 +112,43 @@ export default function CreatePost() {
                         className="grow"
                         placeholder="What are you thinking?"
                         {...register('body')}
-                        color={(errors?.body || (isValidErrMsg && !selectedImg)) ? 'failure' : 'gray'}
+                        color={(errors?.body || (isValidErrMsg && (!imageFiles || imageFiles.length === 0))) ? 'failure' : 'gray'}
                         onChange={(e) => {
-                            if (e.target.value.trim() || selectedImg) {
+                            if (e.target.value.trim() || (imageFiles && imageFiles.length > 0)) {
                                 setIsValidErrMsg('')
+                            }
+                        }}
+                        onKeyDown={(e) => {
+                            if (e.key === 'Enter') {
+                                const currentText = e.target.value.trim();
+                                const hasImage = imageFiles && imageFiles.length > 0;
+
+                                if (!currentText && !hasImage) {
+                                    e.preventDefault();
+                                    setIsValidErrMsg('Please add some content or image to your post');
+                                }
                             }
                         }}
                     />
                     <FileInput
+                        {...register('image')}
                         accept="image/*"
                         className="hidden"
                         ref={uploadImg}
-                        onChange={handleImg}
+                        onChange={handleImageChange}
                     />
-                    <Image onClick={() => uploadImg.current?.click()} className="cursor-pointer"/>
+                    <Image onClick={() => uploadImg.current?.click()} className="cursor-pointer" />
                 </div>
                 {previewImg && (
                     <div className="mt-4 flex flex-wrap gap-2 justify-center">
                         <div className="relative">
-                            <img src={previewImg} alt={`Preview of ${selectedImg?.name}`} className="max-h-60 object-cover rounded" />
-                            <CloseIcon 
-                                onClick={rmvImg} 
+                            <img
+                                src={previewImg}
+                                alt="Preview"
+                                className="max-h-60 object-cover rounded"
+                            />
+                            <CloseIcon
+                                onClick={rmvImg}
                                 className="absolute top-2 right-2 cursor-pointer bg-white rounded-full p-1 shadow-md hover:bg-gray-100"
                             />
                         </div>

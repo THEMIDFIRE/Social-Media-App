@@ -1,15 +1,14 @@
 import { Avatar, Card, Dropdown, DropdownItem, FooterDivider } from 'flowbite-react'
 import { Edit, Message, More, Trash } from 'iconsax-reactjs'
 import moment from 'moment'
-import { useContext } from 'react'
-import { userContext } from '../../context/userContext'
-import CreateComment from '../comment/CreateComment'
-import CommentCard from '../comment/CommentCard'
 import { Link } from 'react-router'
+import CreateComment from '../comment/CreateComment'
+import SingleComment from '../comment/SingleComment'
+import AllComments from '../comment/AllComments'
 
-export default function PostCard({ postData }) {
+export default function PostCard({ postData, id }) {
 
-    // Post Created Time formating
+    // Post Created Time formatting
     const postCreateTime = moment(postData.createdAt);
     const postTime = (() => {
         if (moment().diff(postCreateTime, 'hours') < 24) {
@@ -18,7 +17,6 @@ export default function PostCard({ postData }) {
             return postCreateTime.format('MMM-DD-YYYY, hh:mm A')
         }
     })()
-
 
     return (
         <>
@@ -56,11 +54,12 @@ export default function PostCard({ postData }) {
                 </div>
                 <FooterDivider className='lg:my-1 my-1' />
                 {/* Latest comment card */}
-                {!postData?.comments?.length ? '' : <CommentCard postData={postData} />}
+                {id ? <AllComments postId={id} /> :
+                    (!postData?.comments?.length ? '' : <SingleComment comment={postData} />)
+                }
                 {/* Create Comment Input */}
                 <CreateComment postId={postData?._id} />
             </Card>
         </>
     )
-
 }
