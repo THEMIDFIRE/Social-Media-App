@@ -3,34 +3,31 @@ import { useEffect, useState } from 'react'
 import Skeleton from 'react-loading-skeleton'
 import 'react-loading-skeleton/dist/skeleton.css'
 import PostCard from '../../components/Post/PostCard'
+import { useQuery } from '@tanstack/react-query'
 
 
 export default function AllPosts() {
-
-
-    const [allPosts, setAllPosts] = useState([])
+    const { data, isLoading } = useQuery({
+        queryFn: getAllPosts,
+        queryKey: ['allPosts']
+    })
 
     async function getAllPosts() {
         try {
             const { data } = await axios(`${import.meta.env.VITE_BASE_URL}/posts?sort=-createdAt`, {
                 headers: { token: localStorage.getItem('token') }
             })
-
-            setAllPosts(data.posts)
+            return data.posts
         } catch (error) {
-            console.log('error', error)
+            return error
         }
     }
-
-    useEffect(() => {
-        getAllPosts()
-    }, [])
 
 
     return (
         <>
-            {allPosts.length &&
-            allPosts.map((post) => <PostCard postData={post} key={post._id} />) || <Skeleton count={5} className='h-96 mb-3' />}
+            {!isLoading &&
+                data?.map((post) => <PostCard postData={post} key={post._id} />) || <Skeleton count={5} className='h-96 mb-3' />}
         </>
     )
 }

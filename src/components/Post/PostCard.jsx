@@ -5,6 +5,7 @@ import { useContext } from 'react'
 import { userContext } from '../../context/userContext'
 import CreateComment from '../comment/CreateComment'
 import CommentCard from '../comment/CommentCard'
+import { Link } from 'react-router'
 
 export default function PostCard({ postData }) {
 
@@ -17,7 +18,7 @@ export default function PostCard({ postData }) {
             return postCreateTime.format('MMM-DD-YYYY, hh:mm A')
         }
     })()
-    
+
 
     return (
         <>
@@ -44,8 +45,10 @@ export default function PostCard({ postData }) {
                 </div>
                 {/* Card Content */}
                 <div className='cursor-pointer'>
-                    <p className='mb-3'>{postData?.body}</p>
-                    {!postData?.image ? '' : <img src={postData?.image} alt={postData?.body} className='w-full aspect-auto object-cover' />}
+                    <Link to={'/posts/' + postData._id}>
+                        <p className='mb-3'>{postData?.body}</p>
+                        {!postData?.image ? '' : <img src={postData?.image} alt={postData?.body} className='w-full aspect-auto object-cover' />}
+                    </Link>
                 </div>
                 <div className='flex items-center gap-x-2'>
                     <Message />
@@ -53,9 +56,9 @@ export default function PostCard({ postData }) {
                 </div>
                 <FooterDivider className='lg:my-1 my-1' />
                 {/* Latest comment card */}
-                {!postData?.comments?.length ? '' : <CommentCard postData={postData}/>}
+                {!postData?.comments?.length ? '' : <CommentCard postData={postData} />}
                 {/* Create Comment Input */}
-                <CreateComment postId={postData?._id}/>
+                <CreateComment postId={postData?._id} />
             </Card>
         </>
     )
