@@ -10,7 +10,7 @@ export default function UserContextProvider({ children }) {
     const [userData, setUserData] = useState(null);
     const quit = useNavigate()
 
-    async function getUserData(token) {
+    async function getUserData() {
         try {
             const { data } = await ServerAPI('users/profile-data')
             setUserData(data?.user)

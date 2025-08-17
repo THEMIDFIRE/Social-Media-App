@@ -18,11 +18,11 @@ import ServerAPI from '../../components/shared/ServerAPI';
 export default function Register() {
     const schema = z.object({
         name: z.string('Name not valid').min(3, 'Name must be more than 3 characters'),
-        email: z.email(),
+        email: z.string().email(),
         password: z.string().min(8, 'Password must be 8 characters or more and starts with a capital letter').regex(/^[A-Z][\w]/),
         rePassword: z.string().min(8).regex(/^[A-Z][\w]/).refine((value) => value === getValues('password'), { error: 'Password must be the same' }),
         dateOfBirth: z.string(),
-        gender: z.literal(['male', 'female'], 'Invalid gender choosen'),
+        gender: z.enum(['male', 'female'], { message: 'Invalid gender chosen' }),
     })
 
     const { register, handleSubmit, control, formState: { errors }, getValues } = useForm({ resolver: zodResolver(schema) });

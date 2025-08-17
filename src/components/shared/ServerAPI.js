@@ -27,7 +27,9 @@ ServerAPI.interceptors.response.use((response) => {
                 case 401:
                     toast.error('Session expired. Please login again.')
                     localStorage.removeItem('token')
-                    window.location.href = '/login'
+                    setTimeout(() => {
+                        window.location.href = '/login'
+                    }, 3000)
                     break;
                 case 403:
                     toast.error('You don\'t have permission to do this.');
