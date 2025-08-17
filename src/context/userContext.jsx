@@ -1,6 +1,7 @@
 import axios from "axios";
 import { createContext, useState } from "react";
 import { useNavigate } from "react-router";
+import ServerAPI from "../components/shared/ServerAPI";
 
 export const userContext = createContext(null);
 
@@ -11,10 +12,7 @@ export default function UserContextProvider({ children }) {
 
     async function getUserData(token) {
         try {
-            const { data } = await axios(`${import.meta.env.VITE_BASE_URL}/users/profile-data`, {
-                method: 'GET',
-                headers: { token }
-            });
+            const { data } = await ServerAPI('users/profile-data')
             setUserData(data?.user)
         } catch (error) {
             console.log(error);
@@ -26,7 +24,7 @@ export default function UserContextProvider({ children }) {
         setUserData(null)
         quit('/login')
     }
-    
+
 
     const value = { userData, setUserData, getUserData, signOut };
 

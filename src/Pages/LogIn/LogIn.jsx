@@ -7,6 +7,8 @@ import { Link, useNavigate } from 'react-router';
 import * as z from 'zod';
 import ErrorMsg from '../../components/shared/ErrorMsg';
 import { userContext } from '../../context/userContext';
+import ServerAPI from '../../components/shared/ServerAPI';
+import { toast } from 'react-toastify';
 
 // {
 //     "email":"bahnasy2030@gmail.com",
@@ -19,19 +21,16 @@ const schema = z.object({
 
 export default function LogIn() {
     const { register, handleSubmit, formState: { errors } } = useForm({ resolver: zodResolver(schema) });
-    const {getUserData} = useContext(userContext)
+    const { getUserData } = useContext(userContext)
     const redirect = useNavigate();
     async function getUser(values) {
         try {
-            const {data} = await axios(`${import.meta.env.VITE_BASE_URL}/users/signin`, {
-                method: 'POST',
-                data: values
-            });
+            const { data } = await ServerAPI.post('/users/signin', values);
             localStorage.setItem('token', data?.token)
-            getUserData(data?.token)            
+            getUserData(data?.token)
             redirect('/')
         } catch (error) {
-            console.log(error);
+            toast.error('Login failed.')
         }
     }
     return (

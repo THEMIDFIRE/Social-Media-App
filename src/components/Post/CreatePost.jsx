@@ -10,6 +10,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "react-toastify";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { PuffLoader } from "react-spinners";
+import ServerAPI from "../shared/ServerAPI";
 
 const schema = z.object({
     body: z.string().optional(),
@@ -71,12 +72,9 @@ export default function CreatePost() {
             formData.append('image', values.image[0])
         }
 
-        const { data } = await axios.post(`${import.meta.env.VITE_BASE_URL}/posts`, formData, {
-            headers: {
-                token: localStorage.getItem('token'),
-                'Content-Type': 'multipart/form-data'
-            },
-        });
+        const {data} = await ServerAPI.post('/posts', formData, {
+            headers: {'Content-Type': 'multipart/form-data'}
+        })
         return data
     }
 

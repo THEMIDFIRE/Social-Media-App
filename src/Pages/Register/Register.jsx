@@ -5,6 +5,7 @@ import { Controller, useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router';
 import * as z from 'zod';
 import ErrorMsg from '../../components/shared/ErrorMsg';
+import ServerAPI from '../../components/shared/ServerAPI';
 
 // {
 //     "name": "Ahmed Bahnasy",
@@ -27,14 +28,11 @@ export default function Register() {
     const { register, handleSubmit, control, formState: { errors }, getValues } = useForm({ resolver: zodResolver(schema) });
 
     const redirect = useNavigate();
-    
+
 
     async function createUser(data) {
         try {
-            await axios(`${import.meta.env.VITE_BASE_URL}/users/signup`, {
-                method: 'POST',
-                data
-            });
+            await ServerAPI.post('/users/signup', data)
             redirect('/login');
         } catch (error) {
             console.log(error);

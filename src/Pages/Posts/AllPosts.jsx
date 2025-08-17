@@ -3,6 +3,7 @@ import axios from 'axios'
 import Skeleton from 'react-loading-skeleton'
 import 'react-loading-skeleton/dist/skeleton.css'
 import PostCard from '../../components/Post/PostCard'
+import ServerAPI from '../../components/shared/ServerAPI'
 
 
 export default function AllPosts() {
@@ -14,9 +15,7 @@ export default function AllPosts() {
 
     async function getAllPosts() {
         try {
-            const { data } = await axios(`${import.meta.env.VITE_BASE_URL}/posts?sort=-createdAt`, {
-                headers: { token: localStorage.getItem('token') }
-            })
+            const { data } = await ServerAPI('/posts?sort=-createdAt')
             return data
         } catch (error) {
             return error

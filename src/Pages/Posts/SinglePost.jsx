@@ -3,6 +3,7 @@ import axios from 'axios';
 import Skeleton from 'react-loading-skeleton';
 import { useParams } from 'react-router';
 import PostCard from '../../components/Post/PostCard';
+import ServerAPI from '../../components/shared/ServerAPI';
 
 export default function SinglePost() {
     const { id } = useParams()
@@ -11,12 +12,10 @@ export default function SinglePost() {
         queryFn: getSinglePost,
         queryKey: ['SinglePost', id]
     })
-    
+
     async function getSinglePost() {
         try {
-            const { data } = await axios(`${import.meta.env.VITE_BASE_URL}/posts/${id}`, {
-                headers: { token: localStorage.getItem('token') }
-            })
+            const { data } = await ServerAPI(`/posts/${id}`)
             return data.post
         } catch (error) {
             return error

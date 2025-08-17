@@ -10,6 +10,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { toast } from 'react-toastify'
 import * as z from 'zod'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
+import ServerAPI from '../shared/ServerAPI';
 
 const schema = z.object({
     content: z.string().min(1)
@@ -42,9 +43,7 @@ export default function CreateComment({ postId }) {
 
     async function createComment({ content }) {
         const commentData = { content, post: postId }
-        const { data } = await axios.post(`${import.meta.env.VITE_BASE_URL}/comments`, commentData, {
-            headers: { token: localStorage.getItem('token') },
-        });
+        const { data } = await ServerAPI.post('/comments', commentData)
         return data
     }
 
