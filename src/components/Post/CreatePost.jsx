@@ -8,6 +8,8 @@ import { userContext } from "../../context/userContext";
 import * as z from 'zod';
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "react-toastify";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { PuffLoader } from "react-spinners";
 
 const schema = z.object({
     body: z.string().optional(),
@@ -25,6 +27,30 @@ export default function CreatePost() {
 
     const bodyValue = watch('body')
     const imageFiles = watch('image')
+
+    const queryClient = useQueryClient()
+    const { mutate, isPending } = useMutation({
+        mutationFn: createPost,
+        onSuccess: (data) => {
+            reset()
+            setPreviewImg(null)
+            setIsValidErrMsg('')
+            toast.success(data?.message || 'Post created successfully!')
+            if (uploadImg.current) {
+                uploadImg.current.value = ''
+            }
+            queryClient.invalidateQueries({ queryKey: ['allPosts'] })
+        },
+        onError: (error) => {
+            if (error.response) {
+                toast.error(error.response.data.message || 'Something went wrong');
+            } else if (error.request) {
+                toast.error('Network error - please try again');
+            } else {
+                toast.error(error.message || 'An error occurred');
+            }
+        }
+    })
 
     async function createPost(values) {
         const hasTxt = values.body?.trim();
@@ -45,34 +71,13 @@ export default function CreatePost() {
             formData.append('image', values.image[0])
         }
 
-        try {
-            const { data } = await axios.post(`${import.meta.env.VITE_BASE_URL}/posts`, formData, {
-                headers: {
-                    token: localStorage.getItem('token'),
-                    'Content-Type': 'multipart/form-data'
-                },
-            })
-            reset()
-            setPreviewImg(null)
-            setIsValidErrMsg('')
-            toast.success(data.message || 'Post created successfully!')
-            if (uploadImg.current) {
-                uploadImg.current.value = ''
-            }
-        } catch (error) {
-            console.error('Error creating post:', error);
-
-            if (error.response) {
-                const errorMessage = error.response.data?.message ||
-                    error.response.data?.error ||
-                    `Server error: ${error.response.status}`;
-                toast.error(errorMessage);
-            } else if (error.request) {
-                toast.error('Network error. Please check your connection.');
-            } else {
-                toast.error(error.message || 'Something went wrong');
-            }
-        }
+        const { data } = await axios.post(`${import.meta.env.VITE_BASE_URL}/posts`, formData, {
+            headers: {
+                token: localStorage.getItem('token'),
+                'Content-Type': 'multipart/form-data'
+            },
+        });
+        return data
     }
 
     function handleImageChange(e) {
@@ -103,7 +108,7 @@ export default function CreatePost() {
 
     return (
         <Card className="mb-3">
-            <form onSubmit={handleSubmit(createPost)}>
+            <form onSubmit={handleSubmit(mutate)}>
                 <h2 className="font-bold">Make a post</h2>
                 <FooterDivider className="my-4 lg:my-4" />
                 <div className="flex items-center gap-x-2">
@@ -154,7 +159,13 @@ export default function CreatePost() {
                         </div>
                     </div>
                 )}
-                <Button type="submit" className="bg-blue-800/90 w-full mt-4">Create Post</Button>
+
+
+                {isPending ?
+                    <div className="flex justify-center mt-4">
+                        <PuffLoader size={30} color="#3b82f6" />
+                    </div> :
+                    <Button type="submit" className="bg-blue-800/90 w-full mt-4 cursor-pointer">Create Post</Button>}
             </form>
         </Card>
     )
