@@ -13,7 +13,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query'
 import ServerAPI from '../shared/ServerAPI';
 
 const schema = z.object({
-    content: z.string().min(1)
+    content: z.string().min(1).max(30)
 })
 
 export default function CreateComment({ postId }) {
@@ -54,16 +54,13 @@ export default function CreateComment({ postId }) {
                 className="grow"
                 placeholder="What's your comment?"
                 {...register('content')}
-                maxLength={30}
                 color={errors?.content ? 'failure' : 'gray'}
             />
-            {isPending ?
-                <div className='relative flex items-center justify-center rounded-lg text-center font-medium focus:outline-none focus:ring-4 h-10 px-5 text-sm bg-primary-700 text-white hover:bg-primary-800 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800'>
-                    <PuffLoader size={30} color='#3b82f6' />
-                </div> :
-                <Button type='submit'>
-                    <Send type='submit' className='cursor-pointer' />
-                </Button>}
+            <Button type='submit' disabled={isPending}>
+                {isPending ?
+                    (<PuffLoader size={30} color='#3b82f6' />) :
+                    (<Send type='submit' className='cursor-pointer' />)}
+            </Button>
         </form>
     )
 }

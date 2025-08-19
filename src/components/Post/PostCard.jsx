@@ -2,9 +2,9 @@ import { Avatar, Card, Dropdown, DropdownItem, FooterDivider } from 'flowbite-re
 import { Edit, Message, More, Trash } from 'iconsax-reactjs'
 import moment from 'moment'
 import { Link } from 'react-router'
-import CreateComment from '../comment/CreateComment'
-import SingleComment from '../comment/SingleComment'
 import AllComments from '../comment/AllComments'
+import CommentCard from '../comment/CommentCard'
+import CreateComment from '../comment/CreateComment'
 
 export default function PostCard({ postData, id }) {
 
@@ -55,7 +55,8 @@ export default function PostCard({ postData, id }) {
                 <FooterDivider className='lg:my-1 my-1' />
                 {/* Latest comment card */}
                 {id ? <AllComments postId={id} /> :
-                    (!postData?.comments?.length ? '' : <SingleComment comment={postData} />)
+                    (!postData?.comments?.length ? '' :
+                    <CommentCard comment={postData} isLatest={true}/>)
                 }
                 {/* Create Comment Input */}
                 <CreateComment postId={postData?._id} />

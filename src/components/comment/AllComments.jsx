@@ -1,9 +1,8 @@
 import { useQuery } from '@tanstack/react-query'
-import axios from 'axios'
 import Skeleton from 'react-loading-skeleton'
 import { useParams } from 'react-router'
-import CommentCard from './CommentCard'
 import ServerAPI from '../shared/ServerAPI'
+import CommentCard from './CommentCard'
 
 export default function AllComments({ postId }) {
     const { id } = useParams()
@@ -17,7 +16,7 @@ export default function AllComments({ postId }) {
         queryFn: getAllComments,
         queryKey: ['allComments', commentId],
         select: (data) => data.comments,
-        enabled: !!commentId 
+        // enabled: !!commentId 
     })
 
     async function getAllComments() {

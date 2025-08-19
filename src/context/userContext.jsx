@@ -13,6 +13,7 @@ export default function UserContextProvider({ children }) {
     async function getUserData() {
         try {
             const { data } = await ServerAPI('users/profile-data')
+            localStorage.setItem('userId', data?.user?._id)
             setUserData(data?.user)
         } catch (error) {
             console.log(error);
