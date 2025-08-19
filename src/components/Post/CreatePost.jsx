@@ -15,11 +15,17 @@ import ServerAPI from "../shared/ServerAPI";
 const schema = z.object({
     body: z.string().optional(),
     image: z.any().optional()
-})
+}).refine((data) => {
+    const hasText = data.body && data.body.trim().length > 0;
+    const hasImage = data.image && data.image.length > 0;
+    return hasText || hasImage;
+}, {
+    message:  '',
+    path: ["body"]
+});
 
 export default function CreatePost() {
     const [previewImg, setPreviewImg] = useState(null)
-    const [isValidErrMsg, setIsValidErrMsg] = useState('')
     const { userData } = useContext(userContext)
     const { register, handleSubmit, reset, formState: { errors }, watch, setValue } = useForm({
         resolver: zodResolver(schema)
@@ -35,8 +41,7 @@ export default function CreatePost() {
         onSuccess: (data) => {
             reset()
             setPreviewImg(null)
-            setIsValidErrMsg('')
-            toast.success(data?.message || 'Post created successfully!')
+            toast.success(data?.message)
             if (uploadImg.current) {
                 uploadImg.current.value = ''
             }
@@ -54,26 +59,17 @@ export default function CreatePost() {
     })
 
     async function createPost(values) {
-        const hasTxt = values.body?.trim();
-        const hasImg = values.image && values.image.length > 0;
-
-        if (!hasTxt && !hasImg) {
-            setIsValidErrMsg('Please add some content or image to your post')
-            return;
-        }
-
-        setIsValidErrMsg('');
-
         const formData = new FormData();
-        if (hasTxt) {
+        
+        if (values.body && values.body.trim()) {
             formData.append('body', values.body.trim())
         }
-        if (hasImg) {
+        if (values.image && values.image.length > 0) {
             formData.append('image', values.image[0])
         }
 
-        const {data} = await ServerAPI.post('/posts', formData, {
-            headers: {'Content-Type': 'multipart/form-data'}
+        const { data } = await ServerAPI.post('/posts', formData, {
+            headers: { 'Content-Type': 'multipart/form-data' }
         })
         return data
     }
@@ -84,7 +80,6 @@ export default function CreatePost() {
             const file = files[0];
             setValue('image', files);
             setPreviewImg(URL.createObjectURL(file));
-            setIsValidErrMsg('');
         }
     }
 
@@ -98,10 +93,6 @@ export default function CreatePost() {
         if (uploadImg.current) {
             uploadImg.current.value = ''
         }
-
-        if (!bodyValue?.trim()) {
-            setIsValidErrMsg('Please add some content or image to your post')
-        }
     }
 
     return (
@@ -112,26 +103,10 @@ export default function CreatePost() {
                 <div className="flex items-center gap-x-2">
                     <Avatar img={userData?.photo} />
                     <TextInput
-                        className="grow"
+                        className='grow'
                         placeholder="What are you thinking?"
                         {...register('body')}
-                        color={(errors?.body || (isValidErrMsg && (!imageFiles || imageFiles.length === 0))) ? 'failure' : 'gray'}
-                        onChange={(e) => {
-                            if (e.target.value.trim() || (imageFiles && imageFiles.length > 0)) {
-                                setIsValidErrMsg('')
-                            }
-                        }}
-                        onKeyDown={(e) => {
-                            if (e.key === 'Enter') {
-                                const currentText = e.target.value.trim();
-                                const hasImage = imageFiles && imageFiles.length > 0;
-
-                                if (!currentText && !hasImage) {
-                                    e.preventDefault();
-                                    setIsValidErrMsg('Please add some content or image to your post');
-                                }
-                            }
-                        }}
+                        color={errors?.body ? 'failure' : 'gray'}
                     />
                     <FileInput
                         {...register('image')}
@@ -157,7 +132,6 @@ export default function CreatePost() {
                         </div>
                     </div>
                 )}
-
 
                 {isPending ?
                     <div className="flex justify-center mt-4">
