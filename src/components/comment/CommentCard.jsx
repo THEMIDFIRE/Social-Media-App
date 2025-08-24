@@ -22,14 +22,15 @@ export default function CommentCard({ comment, isLatest = false }) {
     // console.log('commentData', commentData)
     // Delete comment function
     const queryClient = useQueryClient()
-    const {mutate} = useMutation({
+    const { mutate } = useMutation({
         mutationFn: deleteComment,
-        onSuccess: ()=> {
+        onSuccess: () => {
             toast.success()
         }
     })
-    async function deleteComment(postId) {
-        
+    function deleteComment() {
+        console.log('comment', comment)
+
     }
 
 
@@ -46,18 +47,14 @@ export default function CommentCard({ comment, isLatest = false }) {
                     <p className='font-bold'>{commentData?.commentCreator?.name}</p>
                     <span className='capitalize font-medium text-gray-600/50'>{commentTime}</span>
                 </div>
-                <Dropdown className='p-4' arrowIcon={false} inline label={
-                    <More className='cursor-pointer' />
-                } >
-                    <div className='flex items-center'>
-                        <Edit />
-                        <DropdownItem>Edit</DropdownItem>
-                    </div>
-                    <div className='flex items-center'>
-                        <Trash />
-                        <DropdownItem>Delete</DropdownItem>
-                    </div>
-                </Dropdown>
+                {/* {comment?.commentCreator?._id == localStorage.getItem('userId') ? */}
+                    <Dropdown arrowIcon={false} inline label={
+                        <More className='cursor-pointer' />
+                    } >
+                        <DropdownItem className="flex gap-x-2.5 items-center"><Edit />Edit</DropdownItem>
+                        <DropdownItem className="flex gap-x-2.5 items-center" onClick={deleteComment}><Trash /> Delete</DropdownItem>
+                    </Dropdown>
+                    {/* : null} */}
             </div>
             <p className='truncate'>{commentData?.content}</p>
         </Card>

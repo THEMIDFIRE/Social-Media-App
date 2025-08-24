@@ -18,6 +18,18 @@ export default function PostCard({ postData, id }) {
         }
     })()
 
+    function deletePost() {
+        console.log('postData', postData)
+        // In case of my post
+        // postData._id/id = post id <==> send to delete post api
+        // postData.user._id = my id <==> delete anything
+        // postData.comments.post = post id
+        // postData.comments._id = comment id <==> send to api
+        // postData.comments.commentCreator._id = delete my comment
+        // in case of other's post
+        // postData.comments.commentCreator._id = my id/comment <==> send to api
+    }
+
     return (
         <>
             <Card className='mb-3'>
@@ -28,17 +40,11 @@ export default function PostCard({ postData, id }) {
                         <p className='font-medium'>{postData?.user?.name}</p>
                         <span className='capitalize font-medium text-gray-600/50'>{postTime}</span>
                     </div>
-                    <Dropdown className='p-4' arrowIcon={false} inline label={
+                    <Dropdown arrowIcon={false} inline label={
                         <More className='cursor-pointer' />
                     } >
-                        <div className='flex items-center'>
-                            <Edit />
-                            <DropdownItem>Edit</DropdownItem>
-                        </div>
-                        <div className='flex items-center'>
-                            <Trash />
-                            <DropdownItem>Delete</DropdownItem>
-                        </div>
+                        <DropdownItem className="flex gap-x-2.5 items-center"><Edit />Edit</DropdownItem>
+                        <DropdownItem className="flex gap-x-2.5 items-center" onClick={deletePost}><Trash /> Delete</DropdownItem>
                     </Dropdown>
                 </div>
                 {/* Card Content */}
@@ -56,7 +62,7 @@ export default function PostCard({ postData, id }) {
                 {/* Latest comment card */}
                 {id ? <AllComments postId={id} /> :
                     (!postData?.comments?.length ? '' :
-                    <CommentCard comment={postData} isLatest={true}/>)
+                        <CommentCard comment={postData} isLatest={true} />)
                 }
                 {/* Create Comment Input */}
                 <CreateComment postId={postData?._id} />
