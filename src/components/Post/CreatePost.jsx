@@ -27,13 +27,10 @@ const schema = z.object({
 export default function CreatePost() {
     const [previewImg, setPreviewImg] = useState(null)
     const { userData } = useContext(userContext)
-    const { register, handleSubmit, reset, formState: { errors }, watch, setValue } = useForm({
+    const { register, handleSubmit, reset, formState: { errors }, setValue } = useForm({
         resolver: zodResolver(schema)
     })
     const uploadImg = useRef()
-
-    const bodyValue = watch('body')
-    const imageFiles = watch('image')
 
     const queryClient = useQueryClient()
     const { mutate, isPending } = useMutation({
