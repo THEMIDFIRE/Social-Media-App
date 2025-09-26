@@ -25,7 +25,7 @@ export default function CreateComment({ postId }) {
         mutationFn: createComment,
         onSuccess: (data) => {
             reset()
-            toast.success(data?.message || 'Comment created successfully!')
+            toast.success('Comment created successfully!')
             queryClient.invalidateQueries({ queryKey: ['allPosts'] })
             queryClient.invalidateQueries({ queryKey: ['SinglePost'] })
             queryClient.invalidateQueries({ queryKey: ['allComments'] })

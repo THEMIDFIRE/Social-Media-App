@@ -94,7 +94,8 @@ export default function PostCard({ postData, id }) {
                 {/* Latest comment card */}
                 {id ? <AllComments postId={id} /> :
                     (!postData?.comments?.length ? '' :
-                        <CommentCard comment={postData} isLatest={true} />)
+                        <CommentCard comment={postData} isLatest={true} postUserId={postUserId} />
+                    )
                 }
 
                 {/* Create Comment Input */}

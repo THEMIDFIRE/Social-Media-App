@@ -16,7 +16,6 @@ export default function AllComments({ postId }) {
         queryFn: getAllComments,
         queryKey: ['allComments', commentId],
         select: (data) => data.comments,
-        // enabled: !!commentId 
     })
 
     async function getAllComments() {

@@ -3,8 +3,9 @@ import { Avatar, Card, Dropdown, DropdownItem } from "flowbite-react";
 import { Edit, More, Trash } from "iconsax-reactjs";
 import moment from "moment";
 import { toast } from "react-toastify";
+import ServerAPI from "../shared/ServerAPI";
 
-export default function CommentCard({ comment, isLatest = false }) {
+export default function CommentCard({ comment, isLatest = false, postUserId }) {
     const commentData = isLatest
         ? comment?.comments?.[comment.comments.length - 1]
         : comment;
@@ -19,18 +20,26 @@ export default function CommentCard({ comment, isLatest = false }) {
         }
     })()
 
-    // console.log('commentData', commentData)
-    // Delete comment function
+    const commentId = isLatest && comment?.comments?.length > 0
+        ? comment.comments[0]._id
+        : comment._id;
     const queryClient = useQueryClient()
     const { mutate } = useMutation({
         mutationFn: deleteComment,
-        onSuccess: () => {
-            toast.success()
+        onSuccess: (data) => {
+            toast.success('Comment deleted successfully');
+            queryClient.invalidateQueries({ queryKey: ['allComments'] });
+            queryClient.invalidateQueries({ queryKey: ['SinglePost'] });
+            queryClient.invalidateQueries({ queryKey: ['allPosts'] });
+        },
+        onError: (error) => {
+            toast.error(error.response?.data?.message || 'Failed to delete comment');
         }
-    })
-    function deleteComment() {
-        console.log('comment', comment)
-
+    });
+    async function deleteComment() {
+        const { data } = await ServerAPI.delete(`/comments/${commentId}`)
+        console.log(data)
+        return data
     }
 
 
@@ -47,14 +56,15 @@ export default function CommentCard({ comment, isLatest = false }) {
                     <p className='font-bold'>{commentData?.commentCreator?.name}</p>
                     <span className='capitalize font-medium text-gray-600/50'>{commentTime}</span>
                 </div>
-                {/* {comment?.commentCreator?._id == localStorage.getItem('userId') ? */}
+                {
+                    postUserId == commentData?.commentCreator?._id &&
                     <Dropdown arrowIcon={false} inline label={
                         <More className='cursor-pointer' />
                     } >
                         <DropdownItem className="flex gap-x-2.5 items-center"><Edit />Edit</DropdownItem>
-                        <DropdownItem className="flex gap-x-2.5 items-center" onClick={deleteComment}><Trash /> Delete</DropdownItem>
+                        <DropdownItem className="flex gap-x-2.5 items-center" onClick={() => mutate(commentId)}><Trash /> Delete</DropdownItem>
                     </Dropdown>
-                    {/* : null} */}
+                }
             </div>
             <p className='truncate'>{commentData?.content}</p>
         </Card>
