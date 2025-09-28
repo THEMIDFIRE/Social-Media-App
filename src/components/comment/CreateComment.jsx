@@ -1,19 +1,18 @@
-import axios from 'axios'
-import { Avatar, Button, TextInput } from 'flowbite-react'
+import { Avatar, Button, TextInput } from 'flowbite-react';
+import { Send } from 'iconsax-reactjs';
+import { useContext } from 'react';
+import { useForm } from 'react-hook-form';
 import { PuffLoader } from "react-spinners";
-import { Send } from 'iconsax-reactjs'
-import { useContext } from 'react'
-import { useForm } from 'react-hook-form'
-import { userContext } from '../../context/userContext'
+import { userContext } from '../../context/userContext';
 
-import { zodResolver } from '@hookform/resolvers/zod'
-import { toast } from 'react-toastify'
-import * as z from 'zod'
-import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { toast } from 'react-toastify';
+import * as z from 'zod';
 import ServerAPI from '../shared/ServerAPI';
 
 const schema = z.object({
-    content: z.string().min(1).max(30)
+    content: z.string().min(2, 'Comment must be at least 2 characters long').max(30)
 })
 
 export default function CreateComment({ postId }) {
@@ -32,7 +31,8 @@ export default function CreateComment({ postId }) {
         },
         onError: (error) => {
             if (error.response) {
-                toast.error(error.response.data.message || 'Something went wrong');
+                toast.error(error?.response?.data);
+                console.log(error.response.data);
             } else if (error.request) {
                 toast.error('Network error - please try again');
             } else {

@@ -25,11 +25,7 @@ ServerAPI.interceptors.response.use((response) => {
             const message = error.response.data?.message || 'Something is wrong'
             switch (status) {
                 case 401:
-                    toast.error('Session expired. Please login again.')
-                    localStorage.removeItem('token')
-                    setTimeout(() => {
-                        window.location.href = '/login'
-                    }, 3000)
+                    toast.error(error?.response?.data?.message)
                     break;
                 case 403:
                     toast.error('You don\'t have permission to do this.');

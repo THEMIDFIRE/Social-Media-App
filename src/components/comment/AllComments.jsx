@@ -37,7 +37,7 @@ export default function AllComments({ postId }) {
                 <Skeleton count={3} className='h-40 mb-3' />
                 :
                 data?.slice().reverse()?.map((comment) => (
-                    <CommentCard comment={comment} key={comment._id} />
+                    <CommentCard comment={comment} key={comment._id} postId={commentId}/>
                 ))
             }
         </>

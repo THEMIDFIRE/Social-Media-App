@@ -64,7 +64,7 @@ export default function EditPostModal({ isOpen, onClose, postData }) {
     mutationFn: editPost,
     onSuccess: (data) => {
       setPreviewImg(null)
-      toast.success(data?.message)
+      toast.success('Post updated successfully!')
       onClose()
       queryClient.invalidateQueries({ queryKey: ['allPosts'] })
       queryClient.invalidateQueries({ queryKey: ['SinglePost'] })
@@ -100,7 +100,7 @@ export default function EditPostModal({ isOpen, onClose, postData }) {
   return (
     <Modal show={isOpen} onClose={onClose}>
       <ModalHeader>
-        <h2 className="font-bold">Edit post</h2>
+        <h2 className="font-bold">Edit Post</h2>
       </ModalHeader>
       <ModalBody>
         <form onSubmit={handleSubmit(mutate)}>

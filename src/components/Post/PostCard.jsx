@@ -1,7 +1,7 @@
 import { Avatar, Card, Dropdown, DropdownItem, FooterDivider } from 'flowbite-react'
 import { Edit, Message, More, Trash } from 'iconsax-reactjs'
 import moment from 'moment'
-import { Link } from 'react-router'
+import { Link, useNavigate } from 'react-router'
 import { useState } from 'react'
 import AllComments from '../comment/AllComments'
 import CommentCard from '../comment/CommentCard'
@@ -11,9 +11,11 @@ import ServerAPI from '../shared/ServerAPI'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import EditPostModal from './EditPostModal'
 
+
 export default function PostCard({ postData, id }) {
     const [isExpanded, setIsExpanded] = useState(false)
     const [isEditModalOpen, setIsEditModalOpen] = useState(false)
+    const redirect = useNavigate()
 
     // Post Created Time formatting
     const postCreateTime = moment(postData.createdAt);
@@ -33,6 +35,9 @@ export default function PostCard({ postData, id }) {
         mutationFn: deletePost,
         onSuccess: (data) => {
             toast.success('Post deleted successfully');
+            if (id) {
+                redirect('/')
+            }
             queryClient.invalidateQueries({ queryKey: ['allPosts'] });
             queryClient.invalidateQueries({ queryKey: ['SinglePost'] });
         },
@@ -44,11 +49,6 @@ export default function PostCard({ postData, id }) {
     async function deletePost() {
         const { data } = await ServerAPI.delete(`/posts/${postId}`)
         return data
-    }
-    // Edit Post
-    async function editPost() {
-        setIsEditModalOpen(true)
-        console.log(postData)
     }
 
     const isLongText = postData?.body?.length > 200
@@ -68,7 +68,7 @@ export default function PostCard({ postData, id }) {
                         <Dropdown arrowIcon={false} inline label={
                             <More className='cursor-pointer' />
                         } >
-                            <DropdownItem className="flex gap-x-2.5 items-center" onClick={editPost}><Edit />Edit</DropdownItem>
+                            <DropdownItem className="flex gap-x-2.5 items-center" onClick={() => setIsEditModalOpen(true)}><Edit />Edit</DropdownItem>
                             <DropdownItem className="flex gap-x-2.5 items-center" onClick={() => mutate(postId)}><Trash /> Delete</DropdownItem>
                         </Dropdown>
                     }
@@ -111,8 +111,16 @@ export default function PostCard({ postData, id }) {
 
                 {/* Latest comment card */}
                 {id ? <AllComments postId={id} /> :
-                    (!postData?.comments?.length ? '' :
-                        <CommentCard comment={postData} isLatest={true} postUserId={postUserId} />
+                    !postData?.comments?.length ? null : (
+                        <CommentCard
+                            comment={{
+                                ...postData,
+                                isLatestComment: true
+                            }}
+                            isLatest={true}
+                            postUserId={postUserId}
+                            key={`latest-${postData.comments[postData.comments.length - 1]?._id}`}
+                        />
                     )
                 }
 

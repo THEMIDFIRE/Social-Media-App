@@ -38,7 +38,7 @@ export default function CreatePost() {
         onSuccess: (data) => {
             reset()
             setPreviewImg(null)
-            toast.success(data?.message)
+            toast.success('Post created successfully!')
             if (uploadImg.current) {
                 uploadImg.current.value = ''
             }

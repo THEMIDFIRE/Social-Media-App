@@ -4,11 +4,17 @@ import { Edit, More, Trash } from "iconsax-reactjs";
 import moment from "moment";
 import { toast } from "react-toastify";
 import ServerAPI from "../shared/ServerAPI";
+import { useState } from "react";
+import EditCommentModal from "./EditCommentModal";
 
 export default function CommentCard({ comment, isLatest = false, postUserId }) {
+    const [isEditModalOpen, setIsEditModalOpen] = useState(false)
+
     const commentData = isLatest
         ? comment?.comments?.[comment.comments.length - 1]
         : comment;
+        const userId = localStorage.getItem('userId')
+        const commentUserId = commentData?.commentCreator?._id  || commentData?.user?._id
 
     // Comment Time formatting
     const commentCreateTime = moment(commentData?.createdAt);
@@ -20,9 +26,25 @@ export default function CommentCard({ comment, isLatest = false, postUserId }) {
         }
     })()
 
-    const commentId = isLatest && comment?.comments?.length > 0
-        ? comment.comments[0]._id
-        : comment._id;
+    const commentId = (() => {
+        // If it's the latest comment in the post card
+        if (isLatest && comment?.comments?.length > 0) {
+            // Get the latest comment (last in the array)
+            const latestComment = comment.comments[comment.comments.length - 1];
+            return latestComment?._id;
+        }
+        // If it's a regular comment with direct _id
+        if (comment?._id) {
+            return comment._id;
+        }
+        // If comment data is nested in a different structure
+        if (comment?.comment?._id) {
+            return comment.comment._id;
+        }
+        console.error('Could not determine comment ID', comment);
+        return null;
+    })();
+
     const queryClient = useQueryClient()
     const { mutate } = useMutation({
         mutationFn: deleteComment,
@@ -41,31 +63,46 @@ export default function CommentCard({ comment, isLatest = false, postUserId }) {
         return data
     }
 
+    /*console.log('Comment data:', { 
+        comment, 
+        isLatest, 
+        commentId,
+        comments: comment?.comments 
+    });
+    console.log('Rendering CommentCard with:', {
+        commentId,
+        commentData,
+        isLatest,
+        comment
+    });*/
+
 
     return (
-        <Card className="mb-3 bg-gray-300/35">
-            <div className="flex items-center gap-x-2">
-                <Avatar
-                    img={!commentData?.commentCreator?.photo?.includes('undefined')
-                        ? commentData?.commentCreator?.photo
-                        : null
+        <>
+            <Card className="mb-3 bg-gray-300/35">
+                <div className="flex items-center gap-x-2">
+                    <Avatar
+                        img={!commentData?.commentCreator?.photo?.includes('undefined')
+                            ? commentData?.commentCreator?.photo
+                            : null
+                        }
+                    />
+                    <div className='grow'>
+                        <p className='font-bold'>{commentData?.commentCreator?.name}</p>
+                        <span className='capitalize font-medium text-gray-600/50'>{commentTime}</span>
+                    </div>
+                    {userId === postUserId &&
+                        <Dropdown arrowIcon={false} inline label={
+                            <More className='cursor-pointer' />
+                        } >
+                            <DropdownItem className="flex gap-x-2.5 items-center" onClick={() => setIsEditModalOpen(true)}><Edit />Edit</DropdownItem>
+                            <DropdownItem className="flex gap-x-2.5 items-center" onClick={() => mutate(commentId)}><Trash /> Delete</DropdownItem>
+                        </Dropdown>
                     }
-                />
-                <div className='grow'>
-                    <p className='font-bold'>{commentData?.commentCreator?.name}</p>
-                    <span className='capitalize font-medium text-gray-600/50'>{commentTime}</span>
                 </div>
-                {
-                    postUserId == commentData?.commentCreator?._id &&
-                    <Dropdown arrowIcon={false} inline label={
-                        <More className='cursor-pointer' />
-                    } >
-                        <DropdownItem className="flex gap-x-2.5 items-center"><Edit />Edit</DropdownItem>
-                        <DropdownItem className="flex gap-x-2.5 items-center" onClick={() => mutate(commentId)}><Trash /> Delete</DropdownItem>
-                    </Dropdown>
-                }
-            </div>
-            <p className='truncate'>{commentData?.content}</p>
-        </Card>
+                <p className='truncate'>{commentData?.content}</p>
+            </Card>
+            <EditCommentModal isOpen={isEditModalOpen} onClose={() => setIsEditModalOpen(false)} commentId={commentId} comment={commentData}/>
+        </>
     )
 }
