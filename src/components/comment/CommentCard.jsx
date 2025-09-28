@@ -38,7 +38,6 @@ export default function CommentCard({ comment, isLatest = false, postUserId }) {
     });
     async function deleteComment() {
         const { data } = await ServerAPI.delete(`/comments/${commentId}`)
-        console.log(data)
         return data
     }
 

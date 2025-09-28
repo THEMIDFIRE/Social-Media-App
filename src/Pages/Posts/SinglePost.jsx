@@ -28,7 +28,7 @@ export default function SinglePost() {
 
     return (
         <>
-        <Button onClick={() => navigate(-1)} className='mb-3' outline size='xs'><ArrowLeft className='mr-2' />Back</Button>
+        <Button onClick={() => navigate(-1)} className='mb-3' color='dark' outline size='xs'><ArrowLeft className='mr-2' />Back</Button>
             {isLoading ?
                 <Skeleton count={3} className='h-96 mb-3' />
                 :

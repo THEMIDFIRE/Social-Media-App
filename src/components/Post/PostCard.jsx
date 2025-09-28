@@ -8,10 +8,12 @@ import CommentCard from '../comment/CommentCard'
 import CreateComment from '../comment/CreateComment'
 import { toast } from 'react-toastify'
 import ServerAPI from '../shared/ServerAPI'
-import { useQueryClient } from '@tanstack/react-query'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
+import EditPostModal from './EditPostModal'
 
 export default function PostCard({ postData, id }) {
     const [isExpanded, setIsExpanded] = useState(false)
+    const [isEditModalOpen, setIsEditModalOpen] = useState(false)
 
     // Post Created Time formatting
     const postCreateTime = moment(postData.createdAt);
@@ -27,10 +29,26 @@ export default function PostCard({ postData, id }) {
     const postId = postData._id
     const postUserId = postData.user._id
     const queryClient = useQueryClient()
-    function deletePost() {
-        const { data } = ServerAPI.delete(`/posts/${postId}`)
-        toast.success('Post deleted successfully')
-        queryClient.invalidateQueries({ queryKey: ['allPosts'] })
+    const { mutate } = useMutation({
+        mutationFn: deletePost,
+        onSuccess: (data) => {
+            toast.success('Post deleted successfully');
+            queryClient.invalidateQueries({ queryKey: ['allPosts'] });
+            queryClient.invalidateQueries({ queryKey: ['SinglePost'] });
+        },
+        onError: (error) => {
+            toast.error(error.response?.data?.message || 'Failed to delete post');
+        }
+    });
+    // Delete Post
+    async function deletePost() {
+        const { data } = await ServerAPI.delete(`/posts/${postId}`)
+        return data
+    }
+    // Edit Post
+    async function editPost() {
+        setIsEditModalOpen(true)
+        console.log(postData)
     }
 
     const isLongText = postData?.body?.length > 200
@@ -50,8 +68,8 @@ export default function PostCard({ postData, id }) {
                         <Dropdown arrowIcon={false} inline label={
                             <More className='cursor-pointer' />
                         } >
-                            <DropdownItem className="flex gap-x-2.5 items-center"><Edit />Edit</DropdownItem>
-                            <DropdownItem className="flex gap-x-2.5 items-center" onClick={deletePost}><Trash /> Delete</DropdownItem>
+                            <DropdownItem className="flex gap-x-2.5 items-center" onClick={editPost}><Edit />Edit</DropdownItem>
+                            <DropdownItem className="flex gap-x-2.5 items-center" onClick={() => mutate(postId)}><Trash /> Delete</DropdownItem>
                         </Dropdown>
                     }
                 </div>
@@ -101,6 +119,7 @@ export default function PostCard({ postData, id }) {
                 {/* Create Comment Input */}
                 <CreateComment postId={postData?._id} />
             </Card>
+            <EditPostModal isOpen={isEditModalOpen} onClose={() => setIsEditModalOpen(false)} postData={postData} />
         </>
     )
 }
