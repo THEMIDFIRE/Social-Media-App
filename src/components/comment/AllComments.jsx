@@ -4,7 +4,7 @@ import { useParams } from 'react-router'
 import ServerAPI from '../shared/ServerAPI'
 import CommentCard from './CommentCard'
 
-export default function AllComments({ postId }) {
+export default function AllComments({ postId, postUserId }) {
     const { id } = useParams()
     const commentId = postId || id 
 
@@ -37,7 +37,7 @@ export default function AllComments({ postId }) {
                 <Skeleton count={3} className='h-40 mb-3' />
                 :
                 data?.slice().reverse()?.map((comment) => (
-                    <CommentCard comment={comment} key={comment._id} postId={commentId}/>
+                    <CommentCard comment={comment} key={comment._id} postId={commentId} postUserId={postUserId}/>
                 ))
             }
         </>

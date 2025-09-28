@@ -110,7 +110,7 @@ export default function PostCard({ postData, id }) {
                 <FooterDivider className='lg:my-1 my-1' />
 
                 {/* Latest comment card */}
-                {id ? <AllComments postId={id} /> :
+                {id ? <AllComments postId={id} postUserId={postUserId} /> :
                     !postData?.comments?.length ? null : (
                         <CommentCard
                             comment={{
