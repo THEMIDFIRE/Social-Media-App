@@ -19,7 +19,7 @@ export const layout = createBrowserRouter([
             </UserContextProvider>
         , children: [
             { index: true, element: <Protected> <Home /> </Protected> },
-            { path: '/profile/:name', element: <Protected> <ProfilePage /> </Protected> },
+            { path: '/users/:id/posts', element: <Protected> <ProfilePage /> </Protected> },
             { path: '/posts/:id', element: <Protected> <SinglePost /> </Protected> },
             { path: '/login', element: <Auth><LogIn /></Auth> },
             { path: '/register', element: <Auth><Register /></Auth> },

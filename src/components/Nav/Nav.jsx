@@ -6,6 +6,8 @@ import { userContext } from "../../context/userContext";
 export default function Nav() {
     const { userData, getUserData, signOut } = useContext(userContext)
 
+    const userId = localStorage.getItem('userId')
+
     useEffect(() => {
         if (localStorage.getItem('token')) {
             getUserData(localStorage.getItem('token'))
@@ -26,7 +28,7 @@ export default function Nav() {
                             <DropdownHeader>
                                 <p><span className="font-bold">Hello, </span>{userData?.name}</p>
                             </DropdownHeader>
-                            <DropdownItem><Link to={'/profile'}>My Profile</Link></DropdownItem>
+                            <DropdownItem><Link to={'/users/' + userId + '/posts'}>My Profile</Link></DropdownItem>
                             <DropdownItem onClick={signOut}>Sign out</DropdownItem>
                         </Dropdown>) : (<Link to={'/login'}>Login</Link>)
                     }

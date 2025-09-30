@@ -43,6 +43,7 @@ export default function CreatePost() {
                 uploadImg.current.value = ''
             }
             queryClient.invalidateQueries({ queryKey: ['allPosts'] })
+            queryClient.invalidateQueries({ queryKey: ['profile', userData?._id] })
         },
         onError: (error) => {
             if (error.response) {
