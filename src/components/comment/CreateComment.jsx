@@ -10,6 +10,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'react-toastify';
 import * as z from 'zod';
 import ServerAPI from '../shared/ServerAPI';
+import ErrorMsg from '../shared/ErrorMsg';
 
 const schema = z.object({
     content: z.string().min(2, 'Comment must be at least 2 characters long').max(30)
@@ -49,18 +50,21 @@ export default function CreateComment({ postId }) {
 
     return (
         <form className="flex items-center gap-x-2" onSubmit={handleSubmit(mutate)}>
-            <Avatar img={userData?.photo} />
-            <TextInput
-                className="grow"
-                placeholder="What's your comment?"
-                {...register('content')}
-                color={errors?.content ? 'failure' : 'gray'}
-            />
+            <img src={userData?.photo} alt={userData?.name} className="rounded-md size-12 shadow-md object-cover" />
+            <div className="flex flex-col grow relative">
+                <TextInput
+                    placeholder="What's your comment?"
+                    {...register('content')}
+                    color={errors?.content ? 'failure' : 'gray'}
+                />
+                <ErrorMsg error={errors?.content?.message} className='absolute bottom-0 left-0 translate-y-full text-red-500' />
+            </div>
             <Button type='submit' disabled={isPending}>
                 {isPending ?
                     (<PuffLoader size={30} color='#3b82f6' />) :
                     (<Send type='submit' className='cursor-pointer' />)}
             </Button>
+            
         </form>
     )
 }

@@ -10,10 +10,6 @@ import { userContext } from '../../context/userContext';
 import ServerAPI from '../../components/shared/ServerAPI';
 import { toast } from 'react-toastify';
 
-// {
-//     "email":"bahnasy2030@gmail.com",
-//     "password":"Bahnasy@123"
-// }
 const schema = z.object({
     email: z.email(),
     password: z.string().min(8, 'Invalid password, must be 8 characters or more').regex(/^[A-Z][\w]/),
@@ -30,7 +26,7 @@ export default function LogIn() {
             getUserData(data?.token)
             redirect('/')
         } catch (error) {
-            toast.error('Login failed.')
+            toast.error(error.response.data.error)
         }
     }
     return (
@@ -42,15 +38,14 @@ export default function LogIn() {
                             <Label htmlFor="email">Your email</Label>
                         </div>
                         <TextInput id="email" type="email" placeholder="name@example.com" {...register('email')} />
-                        <ErrorMsg error={errors?.email?.message} />
-
+                        <ErrorMsg error={errors?.email?.message} className='absolute bottom-0 left-0 translate-y-full text-red-500' />
                     </div>
                     <div>
                         <div className="mb-2 block">
                             <Label htmlFor="password">Your password</Label>
                         </div>
                         <TextInput id="password" type="password" {...register('password')} />
-                        <ErrorMsg error={errors?.password?.message} />
+                        <ErrorMsg error={errors?.password?.message} className='absolute bottom-0 left-0 translate-y-full text-red-500' />
                     </div>
                     <p>don't have an account? <Link to={'/register'}>Register</Link></p>
                     <Button type="submit">Login</Button>

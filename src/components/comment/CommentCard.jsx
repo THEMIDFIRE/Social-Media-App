@@ -63,20 +63,6 @@ export default function CommentCard({ comment, isLatest = false, postUserId }) {
         return data
     }
 
-    /*console.log('Comment data:', { 
-        comment, 
-        isLatest, 
-        commentId,
-        comments: comment?.comments 
-    });
-    console.log('Rendering CommentCard with:', {
-        commentId,
-        commentData,
-        isLatest,
-        comment
-    });*/
-
-
     return (
         <>
             <Card className="mb-3 bg-gray-300/35">
@@ -95,7 +81,7 @@ export default function CommentCard({ comment, isLatest = false, postUserId }) {
                         <Dropdown arrowIcon={false} inline label={
                             <More className='cursor-pointer' />
                         } >
-                            <DropdownItem className="flex gap-x-2.5 items-center" onClick={() => setIsEditModalOpen(true)}><Edit />Edit</DropdownItem>
+                            {userId === commentUserId && <DropdownItem className="flex gap-x-2.5 items-center" onClick={() => setIsEditModalOpen(true)}><Edit />Edit</DropdownItem>}
                             <DropdownItem className="flex gap-x-2.5 items-center" onClick={() => mutate(commentId)}><Trash /> Delete</DropdownItem>
                         </Dropdown>
                     }

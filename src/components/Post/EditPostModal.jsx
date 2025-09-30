@@ -8,6 +8,7 @@ import { PuffLoader } from 'react-spinners'
 import { toast } from 'react-toastify'
 import { z } from 'zod'
 import ServerAPI from '../shared/ServerAPI'
+import ErrorMsg from '../shared/ErrorMsg'
 
 const schema = z.object({
   body: z.string().optional(),
@@ -105,12 +106,14 @@ export default function EditPostModal({ isOpen, onClose, postData }) {
       <ModalBody>
         <form onSubmit={handleSubmit(mutate)}>
           <div className="flex items-center gap-x-2">
-            <TextInput
-              className='grow'
-              placeholder="What are you thinking?"
-              {...register('body')}
-              color={errors?.body ? 'failure' : 'gray'}
-            />
+            <div className="flex flex-col grow">
+              <TextInput
+                placeholder="What are you thinking?"
+                {...register('body')}
+                color={errors?.body ? 'failure' : 'gray'}
+              />
+              <ErrorMsg error={errors?.body?.message} className='absolute bottom-0 left-0 translate-y-full text-red-500' />
+            </div>
             <FileInput
               {...register('image')}
               accept="image/*"

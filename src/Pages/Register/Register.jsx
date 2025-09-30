@@ -7,14 +7,6 @@ import * as z from 'zod';
 import ErrorMsg from '../../components/shared/ErrorMsg';
 import ServerAPI from '../../components/shared/ServerAPI';
 
-// {
-//     "name": "Ahmed Bahnasy",
-//     "email":"bahnasy2040@gmail.com",
-//     "password":"Bahnasy@123",
-//     "rePassword":"Bahnasy@123",
-//     "dateOfBirth":"7-10-1994",
-//     "gender":"male"
-// }
 export default function Register() {
     const schema = z.object({
         name: z.string('Name not valid').min(3, 'Name must be more than 3 characters'),
@@ -49,28 +41,28 @@ export default function Register() {
                             <Label htmlFor="name">Your Name</Label>
                         </div>
                         <TextInput id="name" type="text" placeholder="John Doe" {...register('name')} />
-                        <ErrorMsg error={errors?.name?.message} />
+                        <ErrorMsg error={errors?.name?.message} className='absolute bottom-0 left-0 translate-y-full text-red-500' />
                     </div>
                     <div>
                         <div className="mb-2 block">
                             <Label htmlFor="email">Your email</Label>
                         </div>
                         <TextInput id="email" type="email" placeholder="name@example.com" {...register('email')} />
-                        <ErrorMsg error={errors?.email?.message} />
+                        <ErrorMsg error={errors?.email?.message} className='absolute bottom-0 left-0 translate-y-full text-red-500' />
                     </div>
                     <div>
                         <div className="mb-2 block">
                             <Label htmlFor="password">Your password</Label>
                         </div>
                         <TextInput id="password" type="password" {...register('password')} />
-                        <ErrorMsg error={errors?.password?.message} />
+                        <ErrorMsg error={errors?.password?.message} className='absolute bottom-0 left-0 translate-y-full text-red-500' />
                     </div>
                     <div>
                         <div className="mb-2 block">
                             <Label htmlFor="rePassword">Repeat password</Label>
                         </div>
                         <TextInput id="rePassword" type="password" {...register('rePassword')} />
-                        <ErrorMsg error={errors?.rePassword?.message} />
+                        <ErrorMsg error={errors?.rePassword?.message} className='absolute bottom-0 left-0 translate-y-full text-red-500' />
 
                     </div>
                     <div>

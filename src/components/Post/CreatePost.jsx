@@ -11,6 +11,7 @@ import { toast } from "react-toastify";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { PuffLoader } from "react-spinners";
 import ServerAPI from "../shared/ServerAPI";
+import ErrorMsg from "../shared/ErrorMsg";
 
 const schema = z.object({
     body: z.string().optional(),
@@ -20,7 +21,7 @@ const schema = z.object({
     const hasImage = data.image && data.image.length > 0;
     return hasText || hasImage;
 }, {
-    message:  '',
+    message: 'Post must have text or image',
     path: ["body"]
 });
 
@@ -58,7 +59,7 @@ export default function CreatePost() {
 
     async function createPost(values) {
         const formData = new FormData();
-        
+
         if (values.body && values.body.trim()) {
             formData.append('body', values.body.trim())
         }
@@ -100,12 +101,14 @@ export default function CreatePost() {
                 <FooterDivider className="my-4 lg:my-4" />
                 <div className="flex items-center gap-x-2">
                     <img src={userData?.photo} alt={userData?.name} className="rounded-md size-12 shadow-md object-cover" />
-                    <TextInput
-                        className='grow'
-                        placeholder="What are you thinking?"
-                        {...register('body')}
-                        color={errors?.body ? 'failure' : 'gray'}
-                    />
+                    <div className="flex flex-col grow">
+                        <TextInput
+                            placeholder="What are you thinking?"
+                            {...register('body')}
+                            color={errors?.body ? 'failure' : 'gray'}
+                        />
+                        <ErrorMsg error={errors?.body?.message} className='absolute bottom-0 left-0 translate-y-full text-red-500' />
+                    </div>
                     <FileInput
                         {...register('image')}
                         accept="image/*"
