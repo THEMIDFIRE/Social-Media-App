@@ -59,7 +59,7 @@ export default function PostCard({ postData, id }) {
             <Card className='mb-3'>
                 {/* Card Header */}
                 <div className="flex items-center gap-x-2">
-                    <Avatar img={postData?.user?.photo} />
+                    <img src={postData?.user?.photo} alt={postData?.user?.name} className="rounded-md size-12 shadow-md object-cover" />
                     <div className='grow'>
                         <p className='font-medium'>{postData?.user?.name}</p>
                         <span className='capitalize font-medium text-gray-600/50'>{postTime}</span>

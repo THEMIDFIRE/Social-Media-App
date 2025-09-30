@@ -99,7 +99,7 @@ export default function CreatePost() {
                 <h2 className="font-bold">Make a post</h2>
                 <FooterDivider className="my-4 lg:my-4" />
                 <div className="flex items-center gap-x-2">
-                    <Avatar img={userData?.photo} />
+                    <img src={userData?.photo} alt={userData?.name} className="rounded-md size-12 shadow-md object-cover" />
                     <TextInput
                         className='grow'
                         placeholder="What are you thinking?"

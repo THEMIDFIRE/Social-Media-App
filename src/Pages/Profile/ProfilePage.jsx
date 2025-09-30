@@ -95,7 +95,6 @@ export default function ProfilePage() {
         }
     });
 
-    // Update the updatePic function
     async function updatePic() {
     const fileInput = uploadImg.current;
     if (!fileInput?.files?.length) {
@@ -110,8 +109,8 @@ export default function ProfilePage() {
         size: file.size
     });
 
-    // Check file size (e.g., 5MB limit)
-    const maxSize = 4 * 1024 * 1024; // 5MB
+    // Check file size (e.g., 4MB limit)
+    const maxSize = 4 * 1024 * 1024; // 4MB
     if (file.size > maxSize) {
         toast.error('Image size should be less than 4MB');
         return;
@@ -142,9 +141,6 @@ export default function ProfilePage() {
                         <img src={userData?.photo} alt={userData?.name} className="rounded-md size-36 shadow-md object-cover" />
                         <Camera className='absolute bottom-1 right-1' />
                     </div>
-                    {/* <Avatar img={userData?.photo} size="xl" className='relative p-0 shadow object-fill object-center size-40 border' onClick={() => setIsEditModalOpen(true)}>
-                        <Camera className='cursor-pointer absolute bottom-1 right-6 translate-x-1/2' />
-                    </Avatar> */}
                     <div className='flex flex-col gap-0.5'>
                         <h1 className='text-2xl font-bold'>{userData?.name}</h1>
                         <p>{userData?.email}</p>
