@@ -10,17 +10,19 @@ function RouteComponent() {
         <>
             <main style={{ fontFamily: "'Manrope', 'Arial', sans-serif" }}>
                 <section>
-                    <div className="container h-screen md:grid md:grid-cols-2 md:items-center">
+                    <div className="container min-h-screen max-w-4/5 mx-auto py-6 max-md:space-y-5 md:grid md:grid-cols-2 md:items-center">
+                        {/* Logo */}
                         <div className="flex justify-center items-center gap-5">
                             <div className='w-1/4'>
                                 <Logo />
                             </div>
                             <div>
-                                <h1 className='font-bold text-7xl text-[#1E2A5E]' style={{ fontFamily: "'Playfair Display', 'Georgia', serif" }}>Reflect</h1>
-                                <p className='text-[#64748B] text-xl font-medium'>What&#39;s on your mind? Share it.</p>
+                                <h1 className='font-bold text-3xl md:text-4xl lg:text-7xl text-[#1E2A5E]' style={{ fontFamily: "'Playfair Display', 'Georgia', serif" }}>Reflect</h1>
+                                <p className='text-[#64748B] max-[425px]:text-sm text-lg lg:text-xl font-medium'>What&#39;s on your mind? Share it.</p>
                             </div>
                         </div>
-                        <div className='mx-auto'>
+                        {/* Forms */}
+                        <div className='mx-auto border-2 border-gray-400/50 rounded-lg px-4 py-6 shadow-xl'>
                             <Outlet />
                         </div>
                     </div>

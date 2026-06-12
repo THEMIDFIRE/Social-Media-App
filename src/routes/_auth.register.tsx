@@ -9,7 +9,8 @@ export const Route = createFileRoute('/_auth/register')({
 })
 
 function RouteComponent() {
-    const [isVisible, setIsVisible] = useState(false)
+    const [isPassVisible, setIsPassVisible] = useState(false)
+    const [isConfirmPassVisible, setIsConfirmPassVisible] = useState(false)
     const formatter = useDateFormatter({ month: "short" });
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -180,20 +181,20 @@ function RouteComponent() {
                         }
                     }}
                 >
-                    <InputGroup className='focus-within:ring-1 focus-within:ring-[#1E2A5E] rounded-md'>
+                    <InputGroup className='relative focus-within:ring-1 focus-within:ring-[#1E2A5E] rounded-md'>
                         <InputGroup.Prefix>
                             <KeyRound size={16} className='text-muted' />
                         </InputGroup.Prefix>
-                        <InputGroup.Input type={isVisible ? "text" : "password"} placeholder="Password" />
-                        <InputGroup.Suffix className="pr-0">
+                        <InputGroup.Input type={isPassVisible ? "text" : "password"} placeholder="Password" />
+                        <InputGroup.Suffix className="pr-0 absolute right-0">
                             <Button
                                 isIconOnly
-                                aria-label={isVisible ? "Hide password" : "Show password"}
+                                aria-label={isPassVisible ? "Hide password" : "Show password"}
                                 size="sm"
                                 variant="ghost"
-                                onPress={() => setIsVisible(!isVisible)}
+                                onPress={() => setIsPassVisible(!isPassVisible)}
                             >
-                                {isVisible ? <Eye className="size-4" /> : <EyeOffIcon className="size-4" />}
+                                {isPassVisible ? <Eye className="size-4" /> : <EyeOffIcon className="size-4" />}
                             </Button>
                         </InputGroup.Suffix>
                     </InputGroup>
@@ -215,20 +216,20 @@ function RouteComponent() {
                         }
                     }}
                 >
-                    <InputGroup className='focus-within:ring-1 focus-within:ring-[#1E2A5E] rounded-md'>
+                    <InputGroup className='relative focus-within:ring-1 focus-within:ring-[#1E2A5E] rounded-md'>
                         <InputGroup.Prefix>
                             <KeyRound size={16} className='text-muted' />
                         </InputGroup.Prefix>
-                        <InputGroup.Input type={isVisible ? "text" : "password"} placeholder="Confirm Password" />
-                        <InputGroup.Suffix className="pr-0">
+                        <InputGroup.Input type={isConfirmPassVisible ? "text" : "password"} placeholder="Confirm Password" />
+                        <InputGroup.Suffix className="pr-0 absolute right-0">
                             <Button
                                 isIconOnly
-                                aria-label={isVisible ? "Hide password" : "Show password"}
+                                aria-label={isConfirmPassVisible ? "Hide password" : "Show password"}
                                 size="sm"
                                 variant="ghost"
-                                onPress={() => setIsVisible(!isVisible)}
+                                onPress={() => setIsConfirmPassVisible(!isConfirmPassVisible)}
                             >
-                                {isVisible ? <Eye className="size-4" /> : <EyeOffIcon className="size-4" />}
+                                {isConfirmPassVisible ? <Eye className="size-4" /> : <EyeOffIcon className="size-4" />}
                             </Button>
                         </InputGroup.Suffix>
                     </InputGroup>
@@ -236,7 +237,7 @@ function RouteComponent() {
                 </TextField>
                 <Button type="submit" className="rounded-md bg-[#1E2A5E] hover:bg-[#1E2A5E]/80" fullWidth>Sign In</Button>
             </Form>
-            <p>Don&#39;t have an account?&nbsp;<Link to="/register" className='hover:underline font-bold'>Register</Link></p>
+            <p>Have an account?&nbsp;<Link to="/" className='hover:underline font-bold'>Log In</Link></p>
         </>
     )
 }
