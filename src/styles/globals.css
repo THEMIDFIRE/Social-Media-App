@@ -2,3 +2,10 @@
 @import "@heroui/styles";
 
 @custom-variant dark (&:is(.dark *));
+
+@theme {
+    --font-serif: 'Playfair Display', Georgia, serif;
+    
+    --color-primary: #1E2A5E;
+    --color-secondary: #64748B;
+}

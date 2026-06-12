@@ -17,8 +17,8 @@ function RouteComponent() {
                                 <Logo />
                             </div>
                             <div>
-                                <h1 className='font-bold text-3xl md:text-4xl lg:text-7xl text-[#1E2A5E]' style={{ fontFamily: "'Playfair Display', 'Georgia', serif" }}>Reflect</h1>
-                                <p className='text-[#64748B] max-[425px]:text-sm text-lg lg:text-xl font-medium'>What&#39;s on your mind? Share it.</p>
+                                <h1 className='font-bold text-3xl md:text-4xl lg:text-7xl text-primary font-serif'>Reflect</h1>
+                                <p className='text-secondary max-[425px]:text-sm text-lg lg:text-xl font-medium'>What&#39;s on your mind? Share it.</p>
                             </div>
                         </div>
                         {/* Forms */}
