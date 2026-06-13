@@ -3,7 +3,7 @@ import { createFileRoute, Link } from '@tanstack/react-router';
 import { Eye, EyeOff, KeyRound, Mail } from 'lucide-react';
 import { useState } from 'react';
 
-export const Route = createFileRoute('/_auth/_auth/')({
+export const Route = createFileRoute('/(auth)/_auth/')({
   component: RouteComponent,
 })
 

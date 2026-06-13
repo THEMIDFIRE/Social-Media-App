@@ -1,19 +1,12 @@
-import { Logo } from "@/components/icons";
 import { Avatar, Button, Dropdown } from "@heroui/react";
 import { Link } from "@tanstack/react-router";
 import { Globe, Home } from "lucide-react";
 
 export default function NavbarComponent() {
     return (
-        <div className="flex justify-between items-center py-4">
-            <div className="flex items-center gap-2">
-                <div className="w-10">
-                    <Logo />
-                </div>
-                <h1 className="text-primary font-serif text-xl font-semibold">Reflect</h1>
-            </div>
+        <>
             <div className="grow">
-                <ul className="flex justify-center items-center gap-4 [&>li>a]:flex [&>li>a]:items-center [&>li>a]:gap-2 [&>li>a]:p-2 [&>li>a]:text-secondary [&>li>.active]:text-primary [&>li>.active]:border-b-3 [&>li>.active]:border-primary">
+                <ul className="flex justify-center items-center gap-4 [&_*>a]:flex [&_*>a]:items-center [&_*>a]:gap-2 [&_*>a]:p-2 [&_*>a]:text-secondary [&_.active]:text-primary [&_.active]:border-b-3 [&_.active]:border-primary [&_.active]:font-semibold">
                     <li>
                         <Link to="/feed" activeOptions={{ exact: true }}>
                             <Home />Feed
@@ -37,13 +30,13 @@ export default function NavbarComponent() {
                             <h4 className="font-semibold text-lg">Mohamed Magdy</h4>
                         </div>
                     </Dropdown.Trigger>
-                    <Dropdown.Popover className="border border-gray-400 shadow-xl">
+                    <Dropdown.Popover className="border border-gray-400 shadow-xl [&_.active]:font-bold">
                         <Dropdown.Menu>
                             <Dropdown.Item>
-                                <Link to="/profile">Profile</Link>
+                                <Link to="/profile" activeOptions={{ exact: true }}>Profile</Link>
                             </Dropdown.Item>
                             <Dropdown.Item>
-                                <Link to="/settings">Settings</Link>
+                                <Link to="/settings" activeOptions={{ exact: true }}>Settings</Link>
                             </Dropdown.Item>
                             <Dropdown.Item>
                                 <Button variant="ghost" className="text-danger p-0">
@@ -54,6 +47,6 @@ export default function NavbarComponent() {
                     </Dropdown.Popover>
                 </Dropdown>
             </div>
-        </div>
+        </>
     )
 }

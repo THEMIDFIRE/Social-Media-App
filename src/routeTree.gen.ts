@@ -9,261 +9,261 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as MainRouteRouteImport } from './routes/_main/route'
-import { Route as AuthAuthRouteImport } from './routes/_auth/_auth'
-import { Route as MainFeedRouteRouteImport } from './routes/_main/feed/route'
-import { Route as MainSettingsIndexRouteImport } from './routes/_main/settings/index'
-import { Route as MainProfileIndexRouteImport } from './routes/_main/profile/index'
-import { Route as MainFeedIndexRouteImport } from './routes/_main/feed/index'
-import { Route as AuthAuthIndexRouteImport } from './routes/_auth/_auth.index'
-import { Route as MainFeedSavedRouteImport } from './routes/_main/feed/saved'
-import { Route as MainFeedCommunityRouteImport } from './routes/_main/feed/community'
-import { Route as AuthAuthRegisterRouteImport } from './routes/_auth/_auth.register'
+import { Route as mainRouteRouteImport } from './routes/(main)/route'
+import { Route as authAuthRouteImport } from './routes/(auth)/_auth'
+import { Route as mainFeedRouteRouteImport } from './routes/(main)/feed/route'
+import { Route as mainSettingsIndexRouteImport } from './routes/(main)/settings/index'
+import { Route as mainProfileIndexRouteImport } from './routes/(main)/profile/index'
+import { Route as mainFeedIndexRouteImport } from './routes/(main)/feed/index'
+import { Route as authAuthIndexRouteImport } from './routes/(auth)/_auth.index'
+import { Route as mainFeedSavedRouteImport } from './routes/(main)/feed/saved'
+import { Route as mainFeedCommunityRouteImport } from './routes/(main)/feed/community'
+import { Route as authAuthRegisterRouteImport } from './routes/(auth)/_auth.register'
 
-const MainRouteRoute = MainRouteRouteImport.update({
-  id: '/_main',
+const mainRouteRoute = mainRouteRouteImport.update({
+  id: '/(main)',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AuthAuthRoute = AuthAuthRouteImport.update({
-  id: '/_auth/_auth',
+const authAuthRoute = authAuthRouteImport.update({
+  id: '/(auth)/_auth',
   getParentRoute: () => rootRouteImport,
 } as any)
-const MainFeedRouteRoute = MainFeedRouteRouteImport.update({
+const mainFeedRouteRoute = mainFeedRouteRouteImport.update({
   id: '/feed',
   path: '/feed',
-  getParentRoute: () => MainRouteRoute,
+  getParentRoute: () => mainRouteRoute,
 } as any)
-const MainSettingsIndexRoute = MainSettingsIndexRouteImport.update({
+const mainSettingsIndexRoute = mainSettingsIndexRouteImport.update({
   id: '/settings/',
   path: '/settings/',
-  getParentRoute: () => MainRouteRoute,
+  getParentRoute: () => mainRouteRoute,
 } as any)
-const MainProfileIndexRoute = MainProfileIndexRouteImport.update({
+const mainProfileIndexRoute = mainProfileIndexRouteImport.update({
   id: '/profile/',
   path: '/profile/',
-  getParentRoute: () => MainRouteRoute,
+  getParentRoute: () => mainRouteRoute,
 } as any)
-const MainFeedIndexRoute = MainFeedIndexRouteImport.update({
+const mainFeedIndexRoute = mainFeedIndexRouteImport.update({
   id: '/',
   path: '/',
-  getParentRoute: () => MainFeedRouteRoute,
+  getParentRoute: () => mainFeedRouteRoute,
 } as any)
-const AuthAuthIndexRoute = AuthAuthIndexRouteImport.update({
+const authAuthIndexRoute = authAuthIndexRouteImport.update({
   id: '/',
   path: '/',
-  getParentRoute: () => AuthAuthRoute,
+  getParentRoute: () => authAuthRoute,
 } as any)
-const MainFeedSavedRoute = MainFeedSavedRouteImport.update({
+const mainFeedSavedRoute = mainFeedSavedRouteImport.update({
   id: '/saved',
   path: '/saved',
-  getParentRoute: () => MainFeedRouteRoute,
+  getParentRoute: () => mainFeedRouteRoute,
 } as any)
-const MainFeedCommunityRoute = MainFeedCommunityRouteImport.update({
+const mainFeedCommunityRoute = mainFeedCommunityRouteImport.update({
   id: '/community',
   path: '/community',
-  getParentRoute: () => MainFeedRouteRoute,
+  getParentRoute: () => mainFeedRouteRoute,
 } as any)
-const AuthAuthRegisterRoute = AuthAuthRegisterRouteImport.update({
+const authAuthRegisterRoute = authAuthRegisterRouteImport.update({
   id: '/register',
   path: '/register',
-  getParentRoute: () => AuthAuthRoute,
+  getParentRoute: () => authAuthRoute,
 } as any)
 
 export interface FileRoutesByFullPath {
-  '/': typeof AuthAuthIndexRoute
-  '/feed': typeof MainFeedRouteRouteWithChildren
-  '/register': typeof AuthAuthRegisterRoute
-  '/feed/community': typeof MainFeedCommunityRoute
-  '/feed/saved': typeof MainFeedSavedRoute
-  '/feed/': typeof MainFeedIndexRoute
-  '/profile/': typeof MainProfileIndexRoute
-  '/settings/': typeof MainSettingsIndexRoute
+  '/feed': typeof mainFeedRouteRouteWithChildren
+  '/register': typeof authAuthRegisterRoute
+  '/feed/community': typeof mainFeedCommunityRoute
+  '/feed/saved': typeof mainFeedSavedRoute
+  '/': typeof authAuthIndexRoute
+  '/feed/': typeof mainFeedIndexRoute
+  '/profile/': typeof mainProfileIndexRoute
+  '/settings/': typeof mainSettingsIndexRoute
 }
 export interface FileRoutesByTo {
-  '/': typeof AuthAuthIndexRoute
-  '/register': typeof AuthAuthRegisterRoute
-  '/feed/community': typeof MainFeedCommunityRoute
-  '/feed/saved': typeof MainFeedSavedRoute
-  '/feed': typeof MainFeedIndexRoute
-  '/profile': typeof MainProfileIndexRoute
-  '/settings': typeof MainSettingsIndexRoute
+  '/register': typeof authAuthRegisterRoute
+  '/feed/community': typeof mainFeedCommunityRoute
+  '/feed/saved': typeof mainFeedSavedRoute
+  '/': typeof authAuthIndexRoute
+  '/feed': typeof mainFeedIndexRoute
+  '/profile': typeof mainProfileIndexRoute
+  '/settings': typeof mainSettingsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
-  '/_main': typeof MainRouteRouteWithChildren
-  '/_main/feed': typeof MainFeedRouteRouteWithChildren
-  '/_auth/_auth': typeof AuthAuthRouteWithChildren
-  '/_auth/_auth/register': typeof AuthAuthRegisterRoute
-  '/_main/feed/community': typeof MainFeedCommunityRoute
-  '/_main/feed/saved': typeof MainFeedSavedRoute
-  '/_auth/_auth/': typeof AuthAuthIndexRoute
-  '/_main/feed/': typeof MainFeedIndexRoute
-  '/_main/profile/': typeof MainProfileIndexRoute
-  '/_main/settings/': typeof MainSettingsIndexRoute
+  '/(main)': typeof mainRouteRouteWithChildren
+  '/(main)/feed': typeof mainFeedRouteRouteWithChildren
+  '/(auth)/_auth': typeof authAuthRouteWithChildren
+  '/(auth)/_auth/register': typeof authAuthRegisterRoute
+  '/(main)/feed/community': typeof mainFeedCommunityRoute
+  '/(main)/feed/saved': typeof mainFeedSavedRoute
+  '/(auth)/_auth/': typeof authAuthIndexRoute
+  '/(main)/feed/': typeof mainFeedIndexRoute
+  '/(main)/profile/': typeof mainProfileIndexRoute
+  '/(main)/settings/': typeof mainSettingsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
-    | '/'
     | '/feed'
     | '/register'
     | '/feed/community'
     | '/feed/saved'
+    | '/'
     | '/feed/'
     | '/profile/'
     | '/settings/'
   fileRoutesByTo: FileRoutesByTo
   to:
-    | '/'
     | '/register'
     | '/feed/community'
     | '/feed/saved'
+    | '/'
     | '/feed'
     | '/profile'
     | '/settings'
   id:
     | '__root__'
-    | '/_main'
-    | '/_main/feed'
-    | '/_auth/_auth'
-    | '/_auth/_auth/register'
-    | '/_main/feed/community'
-    | '/_main/feed/saved'
-    | '/_auth/_auth/'
-    | '/_main/feed/'
-    | '/_main/profile/'
-    | '/_main/settings/'
+    | '/(main)'
+    | '/(main)/feed'
+    | '/(auth)/_auth'
+    | '/(auth)/_auth/register'
+    | '/(main)/feed/community'
+    | '/(main)/feed/saved'
+    | '/(auth)/_auth/'
+    | '/(main)/feed/'
+    | '/(main)/profile/'
+    | '/(main)/settings/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
-  MainRouteRoute: typeof MainRouteRouteWithChildren
-  AuthAuthRoute: typeof AuthAuthRouteWithChildren
+  mainRouteRoute: typeof mainRouteRouteWithChildren
+  authAuthRoute: typeof authAuthRouteWithChildren
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/_main': {
-      id: '/_main'
+    '/(main)': {
+      id: '/(main)'
       path: ''
-      fullPath: '/'
-      preLoaderRoute: typeof MainRouteRouteImport
+      fullPath: ''
+      preLoaderRoute: typeof mainRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/_auth/_auth': {
-      id: '/_auth/_auth'
+    '/(auth)/_auth': {
+      id: '/(auth)/_auth'
       path: ''
-      fullPath: '/'
-      preLoaderRoute: typeof AuthAuthRouteImport
+      fullPath: ''
+      preLoaderRoute: typeof authAuthRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/_main/feed': {
-      id: '/_main/feed'
+    '/(main)/feed': {
+      id: '/(main)/feed'
       path: '/feed'
       fullPath: '/feed'
-      preLoaderRoute: typeof MainFeedRouteRouteImport
-      parentRoute: typeof MainRouteRoute
+      preLoaderRoute: typeof mainFeedRouteRouteImport
+      parentRoute: typeof mainRouteRoute
     }
-    '/_main/settings/': {
-      id: '/_main/settings/'
+    '/(main)/settings/': {
+      id: '/(main)/settings/'
       path: '/settings'
       fullPath: '/settings/'
-      preLoaderRoute: typeof MainSettingsIndexRouteImport
-      parentRoute: typeof MainRouteRoute
+      preLoaderRoute: typeof mainSettingsIndexRouteImport
+      parentRoute: typeof mainRouteRoute
     }
-    '/_main/profile/': {
-      id: '/_main/profile/'
+    '/(main)/profile/': {
+      id: '/(main)/profile/'
       path: '/profile'
       fullPath: '/profile/'
-      preLoaderRoute: typeof MainProfileIndexRouteImport
-      parentRoute: typeof MainRouteRoute
+      preLoaderRoute: typeof mainProfileIndexRouteImport
+      parentRoute: typeof mainRouteRoute
     }
-    '/_main/feed/': {
-      id: '/_main/feed/'
+    '/(main)/feed/': {
+      id: '/(main)/feed/'
       path: '/'
       fullPath: '/feed/'
-      preLoaderRoute: typeof MainFeedIndexRouteImport
-      parentRoute: typeof MainFeedRouteRoute
+      preLoaderRoute: typeof mainFeedIndexRouteImport
+      parentRoute: typeof mainFeedRouteRoute
     }
-    '/_auth/_auth/': {
-      id: '/_auth/_auth/'
+    '/(auth)/_auth/': {
+      id: '/(auth)/_auth/'
       path: '/'
       fullPath: '/'
-      preLoaderRoute: typeof AuthAuthIndexRouteImport
-      parentRoute: typeof AuthAuthRoute
+      preLoaderRoute: typeof authAuthIndexRouteImport
+      parentRoute: typeof authAuthRoute
     }
-    '/_main/feed/saved': {
-      id: '/_main/feed/saved'
+    '/(main)/feed/saved': {
+      id: '/(main)/feed/saved'
       path: '/saved'
       fullPath: '/feed/saved'
-      preLoaderRoute: typeof MainFeedSavedRouteImport
-      parentRoute: typeof MainFeedRouteRoute
+      preLoaderRoute: typeof mainFeedSavedRouteImport
+      parentRoute: typeof mainFeedRouteRoute
     }
-    '/_main/feed/community': {
-      id: '/_main/feed/community'
+    '/(main)/feed/community': {
+      id: '/(main)/feed/community'
       path: '/community'
       fullPath: '/feed/community'
-      preLoaderRoute: typeof MainFeedCommunityRouteImport
-      parentRoute: typeof MainFeedRouteRoute
+      preLoaderRoute: typeof mainFeedCommunityRouteImport
+      parentRoute: typeof mainFeedRouteRoute
     }
-    '/_auth/_auth/register': {
-      id: '/_auth/_auth/register'
+    '/(auth)/_auth/register': {
+      id: '/(auth)/_auth/register'
       path: '/register'
       fullPath: '/register'
-      preLoaderRoute: typeof AuthAuthRegisterRouteImport
-      parentRoute: typeof AuthAuthRoute
+      preLoaderRoute: typeof authAuthRegisterRouteImport
+      parentRoute: typeof authAuthRoute
     }
   }
 }
 
-interface MainFeedRouteRouteChildren {
-  MainFeedCommunityRoute: typeof MainFeedCommunityRoute
-  MainFeedSavedRoute: typeof MainFeedSavedRoute
-  MainFeedIndexRoute: typeof MainFeedIndexRoute
+interface mainFeedRouteRouteChildren {
+  mainFeedCommunityRoute: typeof mainFeedCommunityRoute
+  mainFeedSavedRoute: typeof mainFeedSavedRoute
+  mainFeedIndexRoute: typeof mainFeedIndexRoute
 }
 
-const MainFeedRouteRouteChildren: MainFeedRouteRouteChildren = {
-  MainFeedCommunityRoute: MainFeedCommunityRoute,
-  MainFeedSavedRoute: MainFeedSavedRoute,
-  MainFeedIndexRoute: MainFeedIndexRoute,
+const mainFeedRouteRouteChildren: mainFeedRouteRouteChildren = {
+  mainFeedCommunityRoute: mainFeedCommunityRoute,
+  mainFeedSavedRoute: mainFeedSavedRoute,
+  mainFeedIndexRoute: mainFeedIndexRoute,
 }
 
-const MainFeedRouteRouteWithChildren = MainFeedRouteRoute._addFileChildren(
-  MainFeedRouteRouteChildren,
+const mainFeedRouteRouteWithChildren = mainFeedRouteRoute._addFileChildren(
+  mainFeedRouteRouteChildren,
 )
 
-interface MainRouteRouteChildren {
-  MainFeedRouteRoute: typeof MainFeedRouteRouteWithChildren
-  MainProfileIndexRoute: typeof MainProfileIndexRoute
-  MainSettingsIndexRoute: typeof MainSettingsIndexRoute
+interface mainRouteRouteChildren {
+  mainFeedRouteRoute: typeof mainFeedRouteRouteWithChildren
+  mainProfileIndexRoute: typeof mainProfileIndexRoute
+  mainSettingsIndexRoute: typeof mainSettingsIndexRoute
 }
 
-const MainRouteRouteChildren: MainRouteRouteChildren = {
-  MainFeedRouteRoute: MainFeedRouteRouteWithChildren,
-  MainProfileIndexRoute: MainProfileIndexRoute,
-  MainSettingsIndexRoute: MainSettingsIndexRoute,
+const mainRouteRouteChildren: mainRouteRouteChildren = {
+  mainFeedRouteRoute: mainFeedRouteRouteWithChildren,
+  mainProfileIndexRoute: mainProfileIndexRoute,
+  mainSettingsIndexRoute: mainSettingsIndexRoute,
 }
 
-const MainRouteRouteWithChildren = MainRouteRoute._addFileChildren(
-  MainRouteRouteChildren,
+const mainRouteRouteWithChildren = mainRouteRoute._addFileChildren(
+  mainRouteRouteChildren,
 )
 
-interface AuthAuthRouteChildren {
-  AuthAuthRegisterRoute: typeof AuthAuthRegisterRoute
-  AuthAuthIndexRoute: typeof AuthAuthIndexRoute
+interface authAuthRouteChildren {
+  authAuthRegisterRoute: typeof authAuthRegisterRoute
+  authAuthIndexRoute: typeof authAuthIndexRoute
 }
 
-const AuthAuthRouteChildren: AuthAuthRouteChildren = {
-  AuthAuthRegisterRoute: AuthAuthRegisterRoute,
-  AuthAuthIndexRoute: AuthAuthIndexRoute,
+const authAuthRouteChildren: authAuthRouteChildren = {
+  authAuthRegisterRoute: authAuthRegisterRoute,
+  authAuthIndexRoute: authAuthIndexRoute,
 }
 
-const AuthAuthRouteWithChildren = AuthAuthRoute._addFileChildren(
-  AuthAuthRouteChildren,
+const authAuthRouteWithChildren = authAuthRoute._addFileChildren(
+  authAuthRouteChildren,
 )
 
 const rootRouteChildren: RootRouteChildren = {
-  MainRouteRoute: MainRouteRouteWithChildren,
-  AuthAuthRoute: AuthAuthRouteWithChildren,
+  mainRouteRoute: mainRouteRouteWithChildren,
+  authAuthRoute: authAuthRouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

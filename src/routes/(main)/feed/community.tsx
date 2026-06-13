@@ -1,9 +1,9 @@
 import { createFileRoute } from '@tanstack/react-router'
 
-export const Route = createFileRoute('/_main/settings/')({
+export const Route = createFileRoute('/(main)/feed/community')({
   component: RouteComponent,
 })
 
 function RouteComponent() {
-  return <div>Hello "/_main/settings/"!</div>
+  return <div>Community Feed</div>
 }
