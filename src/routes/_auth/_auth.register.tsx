@@ -4,7 +4,7 @@ import { AtSign, CalendarIcon, Eye, EyeOffIcon, KeyRound, MailIcon, User2, Users
 import { useState } from 'react';
 import { I18nProvider, useDateFormatter } from '@react-aria/i18n';
 
-export const Route = createFileRoute('/_auth/register')({
+export const Route = createFileRoute('/_auth/_auth/register')({
     component: RouteComponent,
 })
 
