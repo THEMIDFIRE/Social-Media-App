@@ -2,3 +2,215 @@
 @import "@heroui/styles";
 
 @custom-variant dark (&:is(.dark *));
+
+/* ==========================================================================
+   PULSE DESIGN SYSTEM
+   One source of truth: raw tokens (--c-*) per theme, then mapped to
+   Tailwind utilities (@theme) and to HeroUI's variables.
+   Theme switch: add/remove the `dark` class on <html>.
+   ========================================================================== */
+
+/* 1. Raw tokens: light (default) */
+:root {
+  --c-bg: #F6F5FB;            /* page background */
+  --c-surface: #FFFFFF;       /* cards, panels */
+  --c-surface-2: #EFEDFB;     /* hover, active nav, comment bubbles */
+  --c-border: #E3E2EE;
+  --c-border-strong: #C4C5D6; /* inputs, ghost buttons */
+  --c-text: #14151A;
+  --c-muted: #565B6B;         /* 6.6:1 on surface */
+  --c-primary: #5B3AE8;       /* buttons, active tab, badges */
+  --c-primary-hover: #4A2BD0;
+  --c-on-primary: #FFFFFF;
+  --c-brand-text: #5B3AE8;    /* accent used as text or icon color */
+  --c-avatar: #E6E2FF;
+  --c-danger: #C62840;
+  --c-scrim: rgba(20, 21, 26, 0.45);
+
+  --radius-card: 16px;
+  --radius-field: 12px;
+  --radius-pill: 999px;
+  --shadow-pop: 0 12px 32px rgba(20, 21, 26, 0.12);
+}
+
+/* 2. Raw tokens: dark */
+.dark {
+  --c-bg: #0E0F13;
+  --c-surface: #15171D;
+  --c-surface-2: #1D2027;
+  --c-border: #262932;
+  --c-border-strong: #3A3E4A;
+  --c-text: #F4F5F7;
+  --c-muted: #A3A8B5;
+  --c-primary: #6D4AFF;
+  --c-primary-hover: #5B3AE8;
+  --c-on-primary: #FFFFFF;
+  --c-brand-text: #B8A9FF;
+  --c-avatar: #23262F;
+  --c-danger: #FF8A98;
+  --c-scrim: rgba(5, 6, 8, 0.72);
+
+  --shadow-pop: 0 12px 32px rgba(0, 0, 0, 0.5);
+}
+
+/* 3. Tailwind utilities: bg-canvas, bg-card, text-ink, text-ink-muted,
+      border-line, bg-primary, text-brand, rounded-card, font-heading ... */
+@theme inline {
+  --font-sans: var(--font-inter), "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-heading: var(--font-space-grotesk), "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
+
+  --color-canvas: var(--c-bg);
+  --color-card: var(--c-surface);
+  --color-card-alt: var(--c-surface-2);
+  --color-line: var(--c-border);
+  --color-line-strong: var(--c-border-strong);
+  --color-ink: var(--c-text);
+  --color-ink-muted: var(--c-muted);
+  --color-primary: var(--c-primary);
+  --color-primary-hover: var(--c-primary-hover);
+  --color-on-primary: var(--c-on-primary);
+  --color-brand: var(--c-brand-text);
+  --color-avatar: var(--c-avatar);
+  --color-danger-ink: var(--c-danger);
+  --color-scrim: var(--c-scrim);
+  --color-secondary: var(--c-muted);
+
+  --radius-card: var(--radius-card);
+  --radius-field: var(--radius-field);
+  --radius-pill: var(--radius-pill);
+  --shadow-pop: var(--shadow-pop);
+}
+
+/* 4. HeroUI bridge: components follow the same tokens.
+      Variable names are from HeroUI v3; if your installed version names
+      one differently, change it here and nothing else. */
+:root,
+.dark {
+  --background: var(--c-bg);
+  --foreground: var(--c-text);
+  --surface: var(--c-surface);
+  --surface-foreground: var(--c-text);
+  --overlay: var(--c-surface);
+  --overlay-foreground: var(--c-text);
+  --muted: var(--c-muted);
+  --accent: var(--c-primary);
+  --accent-foreground: var(--c-on-primary);
+  --danger: var(--c-danger);
+  --border: var(--c-border);
+  --separator: var(--c-border);
+  --focus: var(--c-brand-text);
+}
+
+/* 5. Base */
+@layer base {
+  html {
+    background: var(--c-bg);
+    color: var(--c-text);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1, h2, h3 {
+    font-family: var(--font-heading);
+    letter-spacing: -0.01em;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--c-brand-text);
+    outline-offset: 2px;
+  }
+
+  button, a, [role="button"] {
+    cursor: pointer;
+  }
+}
+
+/* 6. Reusable pieces (match the Figma-style canvas) */
+@layer components {
+  .card {
+    background: var(--c-surface);
+    border: 1px solid var(--c-border);
+    border-radius: var(--radius-card);
+  }
+
+  .btn-primary {
+    min-height: 44px;
+    padding: 0 20px;
+    border-radius: var(--radius-pill);
+    background: var(--c-primary);
+    color: var(--c-on-primary);
+    font-weight: 600;
+    font-size: 14px;
+    transition: background 0.2s;
+  }
+  .btn-primary:hover { background: var(--c-primary-hover); }
+
+  .btn-ghost {
+    min-height: 44px;
+    padding: 0 20px;
+    border-radius: var(--radius-pill);
+    border: 1px solid var(--c-border-strong);
+    color: var(--c-text);
+    font-weight: 600;
+    font-size: 14px;
+    transition: background 0.2s;
+  }
+  .btn-ghost:hover { background: var(--c-surface-2); }
+
+  .action-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 44px;
+    padding: 0 12px;
+    border-radius: var(--radius-pill);
+    color: var(--c-muted);
+    font-size: 14px;
+    font-weight: 500;
+    transition: background 0.2s, color 0.2s;
+  }
+  .action-btn:hover { background: var(--c-surface-2); color: var(--c-text); }
+  .action-btn[aria-pressed="true"] { color: var(--c-brand-text); }
+
+  .field {
+    width: 100%;
+    min-height: 48px;
+    padding: 0 16px;
+    border-radius: var(--radius-field);
+    border: 1px solid var(--c-border-strong);
+    background: var(--c-bg);
+    color: var(--c-text);
+    font-size: 16px;
+  }
+
+  .avatar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: var(--c-avatar);
+    color: var(--c-brand-text);
+    font-family: var(--font-heading);
+    font-weight: 600;
+  }
+
+  /* Skeleton loader for feed, comments, notifications */
+  .skeleton {
+    background: linear-gradient(90deg, var(--c-surface-2) 25%, var(--c-border) 50%, var(--c-surface-2) 75%);
+    background-size: 200% 100%;
+    border-radius: 8px;
+    animation: skeleton 1.4s ease-in-out infinite;
+  }
+}
+
+@keyframes skeleton {
+  from { background-position: 200% 0; }
+  to { background-position: -200% 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
